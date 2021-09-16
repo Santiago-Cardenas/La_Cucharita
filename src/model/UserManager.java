@@ -22,12 +22,16 @@ public class UserManager {
 		users.add(newUser);
 	}
 
-	public boolean accountLogIn(String username,String password) {
+	public boolean accountLogIn(String username,String password) 
+	{
 		boolean found=false;
 		boolean incorrect=false;
-		for(int i=0; i<users.size();i++) {
-			if(username.equals(users.get(i).getUsername())) {
-				if(password.equals(users.get(i).getPassword())) {
+		for(int i=0; i<users.size();i++) 
+		{
+			if(username.equals(users.get(i).getUsername())) 
+			{
+				if(password.equals(users.get(i).getPassword())) 
+				{
 					found=true;
 					incorrect=true;
 					Alert alert = new Alert(AlertType.INFORMATION);
@@ -37,7 +41,8 @@ public class UserManager {
 
 					alert.showAndWait();
 				}
-				else {
+				else 
+				{
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Information Dialog");
 					alert.setHeaderText(null);
