@@ -3,6 +3,8 @@ package ui;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -33,19 +36,32 @@ public class CucharitaGUI {
     private Button btnLogIn;
 
     @FXML
-    private TextField txtIdLogin;
+    private TextField txtUserLogin;
 
     @FXML
     private Pane loginPane;
+    
+    private ObservableList<User> observableList;
+    
+    private UserManager user_Manager;
 	
     
-    public CucharitaGUI() 
-	{
-		UserManager userManager = new UserManager();
+    public CucharitaGUI() {
+    	user_Manager = new UserManager();
 		loginPane = new Pane();
 		loginStage = new Stage();
 	}
-	
+   /* 
+    private void initializeTableView() {
+		observableList = FXCollections.observableArrayList(userManager.getUsers());
+		
+		tableView.setItems(observableList);
+		idTC.setCellValueFactory(new PropertyValueFactory<User,String>("ID"));
+		userTC.setCellValueFactory(new PropertyValueFactory<User,String>("username"));
+		passTC.setCellValueFactory(new PropertyValueFactory<User,String>("password"));
+		birthdayTC.setCellValueFactory(new PropertyValueFactory<User,String>("birthday"));
+	}
+	*/
 	@FXML
     public void createAccount(ActionEvent event) throws IOException {
 		if (verifyInfoInput()==1) {
@@ -65,14 +81,20 @@ public class CucharitaGUI {
 	
 	
     @FXML
-    public void openModules(ActionEvent event) 
+    public void openModules(ActionEvent event) throws IOException 
     {
-    	String id = txtIdLogin.getText();
+    	String user = txtUserLogin.getText();
     	String password = pFLogin.getText();
     	
-    	if(userManager.accountLogIn( id, password))
+    	if(user_Manager.accountLogIn(user,password))
     	{
-    		
+    		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
+    		fxmlLoader.setController(this);
+    		Parent root = fxmlLoader.load();
+    		Scene scene = new Scene(root);
+    		loginStage.setScene(scene);
+    		loginStage.setTitle("Task Manager");
+    		loginStage.show(); 
     	}
     	
     }
@@ -108,7 +130,25 @@ public class CucharitaGUI {
 		loginStage.show(); 
 
 	}
-		
-	
+
+	@FXML
+	void openInventoryModule(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openMenuModule(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openOrdersModule(ActionEvent event) {
+
+	}
+
+	@FXML
+	void openStaffModule(ActionEvent event) {
+
+	}
 
 }
