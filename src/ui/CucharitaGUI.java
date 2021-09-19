@@ -41,15 +41,21 @@ public class CucharitaGUI {
     @FXML
     private Pane loginPane;
     
+    
+    //Attributes
     private ObservableList<User> observableList;
     
     private UserManager user_Manager;
 	
+    private StaffModuleControllerGUI staffModule;
+    
     
     public CucharitaGUI() {
     	user_Manager = new UserManager();
+    	staffModule = new StaffModuleControllerGUI();
 		loginPane = new Pane();
 		loginStage = new Stage();
+		
 	}
    /* 
     private void initializeTableView() {
@@ -131,9 +137,18 @@ public class CucharitaGUI {
 
 	}
 
+	
 	@FXML
-	void openInventoryModule(ActionEvent event) {
-
+	public void openStaffModule(ActionEvent event) throws IOException 
+	{
+		staffModule.showStaffModule();
+	}
+	
+	
+	@FXML
+	public void openInventoryModule(ActionEvent event) 
+	{
+		
 	}
 
 	@FXML
@@ -145,10 +160,21 @@ public class CucharitaGUI {
 	void openOrdersModule(ActionEvent event) {
 
 	}
-
-	@FXML
-	void openStaffModule(ActionEvent event) {
-
+	public PasswordField getpFLogin() {
+		return pFLogin;
 	}
+	public TextField getTxtUserLogin() {
+		return txtUserLogin;
+	}
+	public void setpFLogin(PasswordField pFLogin) {
+		this.pFLogin = pFLogin;
+	}
+	public void setTxtUserLogin(TextField txtUserLogin) {
+		this.txtUserLogin = txtUserLogin;
+	}
+
+   //Getter and Setters
+	
+	
 
 }
