@@ -10,13 +10,14 @@ public class CucharitaGUI {
    
     //Attributes
     private StaffModuleControllerGUI staffModule;
- 
+    private InventoryModuleControllerGUI inventoryModule;
     
     @FXML
     private Pane taskManagerPane;
     public CucharitaGUI() 
     {
-    	staffModule = new StaffModuleControllerGUI();   	       	
+    	staffModule = new StaffModuleControllerGUI();   
+    	inventoryModule = new InventoryModuleControllerGUI();
 	}
 	     
 	@FXML
@@ -27,9 +28,9 @@ public class CucharitaGUI {
 	
 	
 	@FXML
-	private void openInventoryModule(ActionEvent event) 
+	private void openInventoryModule(ActionEvent event) throws IOException 
 	{
-		
+		inventoryModule.showInventoryModule();
 	}
 
 	@FXML
