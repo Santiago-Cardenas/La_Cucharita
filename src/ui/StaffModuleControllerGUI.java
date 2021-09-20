@@ -1,17 +1,27 @@
 package ui;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.User;
 import model.UserManager;
 
 public class StaffModuleControllerGUI {
@@ -39,12 +49,41 @@ public class StaffModuleControllerGUI {
     @FXML
     private TextField txtIdChange;
     
+    @FXML
+    private Pane registerPane;
+
+    @FXML
+    private TextField txtUserName;
+
+    @FXML
+    private TextField txtUserId;
+
+    @FXML
+    private PasswordField pFUserPassword;
+
+    @FXML
+    private DatePicker dPUserBirthday;
+
+    @FXML
+    private TableView<User> tvEmployeesList;
+
+    @FXML
+    private TableColumn<User, String> userNameTC;
+
+    @FXML
+    private TableColumn<User, String> idTC;
+
+    @FXML
+    private TableColumn<User, String> birthdayTC;
+
     //Attributes
 	private Stage staffModuleStage; 
 	
 	private UserManager staffUserManager;
 	
+	private ObservableList<User> observableList;
 	
+
 	
 	public StaffModuleControllerGUI()
 	{
@@ -54,7 +93,15 @@ public class StaffModuleControllerGUI {
 	}
 	
 	
-	
+    private void initializeTableView() 
+    {
+		observableList = FXCollections.observableArrayList(staffUserManager.getUsers());
+		
+		tvEmployeesList.setItems(observableList);
+		userNameTC.setCellValueFactory(new PropertyValueFactory<User,String>("username"));
+		idTC.setCellValueFactory(new PropertyValueFactory<User,String>("id"));
+		birthdayTC.setCellValueFactory(new PropertyValueFactory<User,String>("birthDay"));
+	}
 	
 	public void showStaffModule() throws IOException
 	{
@@ -91,16 +138,74 @@ public class StaffModuleControllerGUI {
     
     
     @FXML
-    public void goToRegistEmployee(ActionEvent event) 
+    public void goToRegistEmployee(ActionEvent event) throws IOException 
     {
-
+     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent register = fxmlLoader.load();
+    	staffModulePane.getChildren().setAll( register);
     }
 
-    @FXML
-    public void showEmployeeList(ActionEvent event) {
+	public int verifyInfoInput() 
+	{
+		int readyToCreateAccount=1;
+		
+		if(txtUserName.getText().equals("") && pFUserPassword.getText().equals("") && txtUserId.getText().equals("") && dPUserBirthday.toString().equals("")) 
+		{
+	
+			Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please fill in all the information asked");
 
+			alert.showAndWait();
+			readyToCreateAccount=-1;
+		}
+		
+		return readyToCreateAccount;
+	}
+
+    
+    @FXML
+    public void registNewUser(ActionEvent event) throws IOException 
+    {
+    	if (verifyInfoInput() == 1) 
+    	{
+        	LocalDate bday = dPUserBirthday.getValue();
+        	String username = txtUserName.getText();
+        	String password = pFUserPassword.getText();
+        	String id = txtUserId.getText();
+        	
+        	User newUser = new User(username, password, id, bday.toString()); 
+        	staffUserManager.add(newUser);
+        	Alert alert = new Alert(AlertType.INFORMATION);
+        	alert.setTitle("Information Dialog");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Employee succesfully registered");
+
+    		alert.showAndWait();
+    		    		
+    		}
+    	
+    	
+    }
+    
+    @FXML
+    public void showEmployeeList(ActionEvent event) throws IOException 
+    {
+     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("listOfEmployees.fxml"));
+    	fxmlLoader.setController(this);
+    	Parent employeesList = fxmlLoader.load();
+    	staffModulePane.getChildren().setAll( employeesList );
+    	
+    	initializeTableView();
     }
 	
+    @FXML
+    public void goToLogIn(ActionEvent event) throws IOException 
+    {
+    	
+    }
 
 
 }

@@ -1,8 +1,14 @@
 package model;
 
 public class User {
+	
+	
 	private String username,password,birthDay,id;
-	public User(String name, String password, String id, String birthDay) {
+	
+	
+	
+	public User(String name, String password, String id, String birthDay) 
+	{
 		this.username = name;
 		this.password = password;
 		this.id = id;

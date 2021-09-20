@@ -14,10 +14,12 @@ public class Main extends Application{
     
     @FXML
     private Pane mainPane = new Pane();
+    private LogInControllerGUI logIn = new LogInControllerGUI();
     
 	public static void main(String [] args)
 	{
 		launch(args);
+		
 	}
 	
 	
@@ -25,7 +27,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception 
 	{
 		// TODO Auto-generated method stub
-		
+		/**
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
 		cucharitagui = new CucharitaGUI();
 		fxmlLoader.setController(cucharitagui);
@@ -36,8 +38,10 @@ public class Main extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("La Cucharita");
 		//primaryStage.show();
+		 
+		*/
 		
-		cucharitagui.showLogin(mainPane);
+		logIn.showLogin(mainPane);
 		//classroomgui.loadPane(mainPane);
 	}			
 	
