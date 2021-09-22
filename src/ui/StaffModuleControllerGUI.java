@@ -23,7 +23,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
 import model.UserManager;
-
 public class StaffModuleControllerGUI {
 
 	//FXML Attributes
@@ -83,13 +82,15 @@ public class StaffModuleControllerGUI {
 	
 	private ObservableList<User> observableList;
 	
+	private CucharitaGUI cucharitaGUI;
 
 	
-	public StaffModuleControllerGUI()
+	public StaffModuleControllerGUI(CucharitaGUI cucharitaGUI)
 	{
 		staffModuleStage = new Stage();
 		staffModulePane = new Pane();
 		staffUserManager = new UserManager();
+		this.cucharitaGUI = cucharitaGUI;
 	}
 	
 	
@@ -103,19 +104,6 @@ public class StaffModuleControllerGUI {
 		birthdayTC.setCellValueFactory(new PropertyValueFactory<User,String>("birthDay"));
 	}
 	
-	public void showStaffModule() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("staffModule.fxml"));
-		fxmlLoader.setController(this);
-		Parent root = fxmlLoader.load();
-		Scene scene = new Scene(root);
-		staffModuleStage.setScene(scene);
-		staffModuleStage.setTitle("Staff Module");
-		staffModuleStage.show(); 
-	}
-	
-	
-
     @FXML
     public void goToSetPassword(ActionEvent event) throws IOException 
     {
@@ -185,7 +173,7 @@ public class StaffModuleControllerGUI {
 
     		alert.showAndWait();
     		    		
-    		}
+    	}
     	
     	
     }
@@ -202,9 +190,23 @@ public class StaffModuleControllerGUI {
     }
 	
     @FXML
+    private void openModules(ActionEvent event)
+    {}
+    
+    @FXML
     public void goToLogIn(ActionEvent event) throws IOException 
     {
     	
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
+		fxmlLoader.setController(cucharitaGUI);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		cucharitaGUI.getLoginStage().setScene(scene);
+		cucharitaGUI.getLoginStage().setTitle("task Manager");
+		cucharitaGUI.getLoginStage().show(); 
+		
+		
+		
     }
 
 

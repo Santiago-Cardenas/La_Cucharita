@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,19 +13,25 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Ingredient;
+import model.User;
 
 public class InventoryModuleControllerGUI {
 	
-	//FXML Atributtes
+	//FXML Attributes
 	@FXML
-	private TableView<?> tvInventory;
+	private TableView<Ingredient> tvInventory;
 
 	@FXML
-	private TableColumn<?, ?> tcIngredients;
+	private TableColumn<Ingredient, String> tcIngredients;
 
 	@FXML
-	private TableColumn<?, ?> tcAmount;
+	private TableColumn<Ingredient, Double> tcAmount;
+	
+    @FXML
+    private TableColumn<Ingredient, String> tcUnits;
 
 	@FXML
 	private TextField txtIngredientNameAdd;
@@ -43,25 +51,32 @@ public class InventoryModuleControllerGUI {
 	//Attributes
 	private Stage inventoryModuleStage;
 	 
+	private ObservableList<Ingredient> observableList2;
+	
+	
+	
 	public InventoryModuleControllerGUI()
 	{
 		inventoryModuleStage = new Stage();
 	}
 	  
-
-	public void showInventoryModule() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inventoryModule.fxml"));
-		fxmlLoader.setController(this);
-		Parent root = fxmlLoader.load();
-		Scene scene = new Scene(root);
-		inventoryModuleStage.setScene(scene);
-		inventoryModuleStage.setTitle("Staff Module");
-		inventoryModuleStage.show(); 
-	}
 	
+	/*
+    private void initializeTableView() 
+    {
+		observableList2 = FXCollections.observableArrayList(staffUserManager.getUsers());
+		
+		tvInventory.setItems(observableList2);
+		tcIngredients.setCellValueFactory(new PropertyValueFactory<User,String>("ingredientName"));
+		tcAmount.setCellValueFactory(new PropertyValueFactory<User,String>("ingredientQT"));
+		tcUnits.setCellValueFactory(new PropertyValueFactory<User,String>("birthDay"));
+	}
+
+	*/
 	
 	//FXML methods:
+	
+	
 	
     @FXML
     public void addIngredient(ActionEvent event) {

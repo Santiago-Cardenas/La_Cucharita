@@ -14,7 +14,12 @@ public class Main extends Application{
     
     @FXML
     private Pane mainPane = new Pane();
-    private LogInControllerGUI logIn = new LogInControllerGUI();
+  
+    
+    public Main()
+    {
+    	cucharitagui = new CucharitaGUI();
+    }
     
 	public static void main(String [] args)
 	{
@@ -41,7 +46,7 @@ public class Main extends Application{
 		 
 		*/
 		
-		logIn.showLogin(mainPane);
+		cucharitagui.showLogin(mainPane);
 		//classroomgui.loadPane(mainPane);
 	}			
 	
