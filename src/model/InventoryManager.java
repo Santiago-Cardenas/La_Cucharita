@@ -20,9 +20,28 @@ public class InventoryManager {
 		return ingredients;
 	}
 	
-	public void addIngredient( Ingredient newIngredient )
-	{
-		ingredients.add(newIngredient);
+	public void addIngredient( Ingredient newIngredient ){
+		boolean alreadyExists=true;
+		for(int i=0;i<ingredients.size();i++) {
+			if(ingredients.get(i).getIngredientName().equalsIgnoreCase(newIngredient.getIngredientName())) {
+				alreadyExists=false;
+			}
+		}
+		if(alreadyExists) {
+			ingredients.add(newIngredient);
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("The ingredient has been stored!");
+			alert.showAndWait();
+		}
+		else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("This ingredient already exits");
+			alert.showAndWait();
+		}
 	}
 	
 	

@@ -22,7 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
-import model.UserManager;
 public class StaffModuleControllerGUI {
 
 	//FXML Attributes
@@ -44,6 +43,9 @@ public class StaffModuleControllerGUI {
 
     @FXML
     private PasswordField pFNewPassword;
+    
+    @FXML
+    private PasswordField pFOldPassword;
     
     @FXML
     private TextField txtIdChange;
@@ -78,8 +80,6 @@ public class StaffModuleControllerGUI {
     //Attributes
 	private Stage staffModuleStage; 
 	
-	private UserManager staffUserManager;
-	
 	private ObservableList<User> observableList;
 	
 	private CucharitaGUI cucharitaGUI;
@@ -87,16 +87,15 @@ public class StaffModuleControllerGUI {
 	
 	public StaffModuleControllerGUI(CucharitaGUI cucharitaGUI)
 	{
-		staffModuleStage = new Stage();
+		setStaffModuleStage(new Stage());
 		staffModulePane = new Pane();
-		staffUserManager = new UserManager();
 		this.cucharitaGUI = cucharitaGUI;
 	}
 	
 	
     private void initializeTableView() 
     {
-		observableList = FXCollections.observableArrayList(staffUserManager.getUsers());
+		observableList = FXCollections.observableArrayList(cucharitaGUI.userManager.getUsers());
 		
 		tvEmployeesList.setItems(observableList);
 		userNameTC.setCellValueFactory(new PropertyValueFactory<User,String>("username"));
@@ -118,10 +117,12 @@ public class StaffModuleControllerGUI {
     @FXML
     public void changePassowrdBTN(ActionEvent event) 
     {
-   	 	String id = txtIdChange.getText();
-   	 	String newPassword = pFNewPassword.getPromptText();		
-   	 
-   	 	staffUserManager.changePassword(id, newPassword);
+    	String id = txtIdChange.getText();
+    	String oldPassword = pFOldPassword.getText();		
+    	String newPassword = pFNewPassword.getText();		
+
+    	cucharitaGUI.userManager.changePassword(id, oldPassword,newPassword);
+
     }
     
     
@@ -164,8 +165,9 @@ public class StaffModuleControllerGUI {
         	String password = pFUserPassword.getText();
         	String id = txtUserId.getText();
         	
-        	User newUser = new User(username, password, id, bday.toString()); 
-        	staffUserManager.add(newUser);
+        	User newUser = new User(id,username, password, bday.toString()); 
+        	cucharitaGUI.userManager.addNewUser(newUser);
+        	
         	Alert alert = new Alert(AlertType.INFORMATION);
         	alert.setTitle("Information Dialog");
     		alert.setHeaderText(null);
@@ -194,9 +196,7 @@ public class StaffModuleControllerGUI {
     {}
     
     @FXML
-    public void goToLogIn(ActionEvent event) throws IOException 
-    {
-    	
+    public void goBackToModules(ActionEvent event) throws IOException    {   	
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
 		fxmlLoader.setController(cucharitaGUI);
 		Parent root = fxmlLoader.load();
@@ -204,10 +204,28 @@ public class StaffModuleControllerGUI {
 		cucharitaGUI.getLoginStage().setScene(scene);
 		cucharitaGUI.getLoginStage().setTitle("task Manager");
 		cucharitaGUI.getLoginStage().show(); 
-		
-		
-		
     }
+    
+    @FXML
+    public void goBackToMStaffModule(ActionEvent event) throws IOException {   	
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("staffModule.fxml"));
+		fxmlLoader.setController(this);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		cucharitaGUI.getLoginStage().setScene(scene);
+		cucharitaGUI.getLoginStage().setTitle("task Manager");
+		cucharitaGUI.getLoginStage().show(); 	
+    }
+
+
+	public Stage getStaffModuleStage() {
+		return staffModuleStage;
+	}
+
+
+	public void setStaffModuleStage(Stage staffModuleStage) {
+		this.staffModuleStage = staffModuleStage;
+	}
 
 
 }

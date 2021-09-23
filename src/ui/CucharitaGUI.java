@@ -22,7 +22,7 @@ public class CucharitaGUI {
     
     private InventoryModuleControllerGUI inventoryModule;
     
-    private UserManager userManager;
+    public UserManager userManager;
     
   	private Stage loginStage;
      
@@ -68,10 +68,10 @@ public class CucharitaGUI {
     @FXML
     private void openModules(ActionEvent event) throws IOException 
     {
-    	String user = txtUserLogin.getText();
+    	String userId = txtUserLogin.getText();
     	String password = pFLogin.getText();
     	
-    	if(userManager.accountLogIn(user,password))
+    	if(userManager.accountLogIn(userId,password))
     	{
     		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
     		fxmlLoader.setController(this);
@@ -85,8 +85,7 @@ public class CucharitaGUI {
     }
     
 	@FXML
-	private void openStaffModule(ActionEvent event) throws IOException 
-	{
+	private void openStaffModule(ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("staffModule.fxml"));
 		fxmlLoader.setController(staffModule);
 		Parent root = fxmlLoader.load();
@@ -99,8 +98,7 @@ public class CucharitaGUI {
 	
 	
 	@FXML
-	private void openInventoryModule(ActionEvent event) throws IOException 
-	{
+	private void openInventoryModule(ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inventoryModule.fxml"));
 		fxmlLoader.setController(inventoryModule);
 		Parent root = fxmlLoader.load();
@@ -111,8 +109,7 @@ public class CucharitaGUI {
 	}
 
 	@FXML
-	void openMenuModule(ActionEvent event) 
-	{
+	void openMenuModule(ActionEvent event) {
 
 	}
 
@@ -122,14 +119,17 @@ public class CucharitaGUI {
 
 	}
 
-	/*
-	public void goToLogIn() throws IOException 
-	{
-
-
-
-	}
-	*/
+	@FXML
+    void goToLogIn(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
+		fxmlLoader.setController(this);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		loginStage.setScene(scene);
+		loginStage.setTitle("Log in");
+		loginStage.show(); 
+		
+    }
 	//getter
 	public Stage getLoginStage()
 	{

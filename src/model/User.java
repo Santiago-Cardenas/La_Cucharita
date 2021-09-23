@@ -7,7 +7,7 @@ public class User {
 	
 	
 	
-	public User(String name, String password, String id, String birthDay) 
+	public User(String id,String name, String password, String birthDay) 
 	{
 		this.username = name;
 		this.password = password;

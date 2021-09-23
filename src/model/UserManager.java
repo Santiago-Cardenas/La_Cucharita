@@ -8,11 +8,11 @@ import javafx.scene.control.Alert.AlertType;
 
 public class UserManager {
 
-	private List<User> users;
+	public List<User> users;
 
 	public UserManager() {
 		users = new ArrayList <User>();
-		User admin = new User("1","123","000","27-03-2002");
+		User admin = new User("000","1","123","27-03-2002");
 		users.add(admin);
 	}
 
@@ -20,7 +20,7 @@ public class UserManager {
 		return users;
 	}
 
-	public void  add(User newUser) {
+	public void  addNewUser(User newUser) {
 		users.add(newUser);
 	}
 
@@ -43,7 +43,7 @@ public class UserManager {
 				}
 				else {
 					Alert alert = new Alert(AlertType.WARNING);
-					alert.setTitle("Information Dialog");
+					alert.setTitle("Warning Dialog");
 					alert.setHeaderText(null);
 					alert.setContentText("Incorrect password");
 
@@ -55,7 +55,7 @@ public class UserManager {
 
 		if(incorrect==false) {
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Information Dialog");
+			alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("Incorrect Id");
 
@@ -64,17 +64,39 @@ public class UserManager {
 		return found;
 	}
 
-	public void changePassword(String id,String newPassword) {
+	public void changePassword(String id,String oldPassword,String newPassword) {
+		boolean idFound=false;
 		for(int i=0; i<users.size();i++) {
 			if(id.equalsIgnoreCase(users.get(i).getId())){
-				users.get(i).setPassword(newPassword);
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Information Dialog");
-				alert.setHeaderText(null);
-				alert.setContentText("Password successfully changed!");
+				if(oldPassword.equalsIgnoreCase(users.get(i).getPassword())) {
+					users.get(i).setPassword(newPassword);
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Information Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("Password successfully changed!");
 
-				alert.showAndWait();
+					alert.showAndWait();
+
+				}
+				else {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Warning Dialog");
+					alert.setHeaderText(null);
+					alert.setContentText("Incorrect password");
+
+					alert.showAndWait();
+				}
+				idFound=true;
 			}
+		}
+		
+		if(idFound==false) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("The Id does not exist");
+
+			alert.showAndWait();
 		}
 	}
 	

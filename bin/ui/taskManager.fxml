@@ -53,6 +53,11 @@
                   </RadialGradient>
                </textFill>
             </Label>
+            <Button layoutX="462.0" layoutY="25.0" mnemonicParsing="false" onAction="#goToLogIn" prefHeight="25.0" prefWidth="130.0" style="-fx-background-color: white;" text="LOG OFF" textFill="#f06400">
+               <font>
+                  <Font name="Microsoft JhengHei UI Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

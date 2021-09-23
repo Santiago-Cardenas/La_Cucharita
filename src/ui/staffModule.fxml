@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane fx:id="staffModulePane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
@@ -45,6 +44,11 @@
             <Button fx:id="btnChangePassword" layoutX="58.0" layoutY="257.0" mnemonicParsing="false" onAction="#goToSetPassword" prefHeight="37.0" prefWidth="145.0" style="-fx-background-color: white;" text="Change Password" textFill="#ff7700">
                <font>
                   <Font name="Microsoft JhengHei UI Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button layoutX="480.0" layoutY="28.0" mnemonicParsing="false" onAction="#goBackToModules" prefHeight="42.0" prefWidth="100.0" style="-fx-background-color: LIGHTGRAY;" text="GO BACK" textFill="#fc7100">
+               <font>
+                  <Font name="Microsoft JhengHei UI Bold" size="15.0" />
                </font>
             </Button>
          </children>
