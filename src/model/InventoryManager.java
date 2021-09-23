@@ -8,7 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class InventoryManager {
 	
-	private List<Ingredient> ingredients;
+	public List<Ingredient> ingredients;
 	
 	public InventoryManager()
 	{
