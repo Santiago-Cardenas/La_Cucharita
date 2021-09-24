@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,7 +19,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Ingredient;
 import model.InventoryManager;
-import model.User;
 
 public class InventoryModuleControllerGUI {
 	
@@ -95,7 +93,7 @@ public class InventoryModuleControllerGUI {
 	//FXML methods:
 
 	@FXML
-    public void addIngredient(ActionEvent event) {
+    public void addIngredient(ActionEvent event) throws IOException {
 		String ingredientName= txtIngredientNameAdd.getText();
 		String ingredientUnits= txtUnits.getText();
 		double ingredientQT= Double.parseDouble(txtIngredientAmountAdd.getText());
