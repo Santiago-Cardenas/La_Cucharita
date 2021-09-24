@@ -47,7 +47,7 @@ public class CucharitaGUI {
     public CucharitaGUI() 
     {
     	staffModule = new StaffModuleControllerGUI(this);   
-    	inventoryModule = new InventoryModuleControllerGUI();
+    	inventoryModule = new InventoryModuleControllerGUI(this);
     	userManager = new UserManager();
     	loginStage = new Stage();
     	

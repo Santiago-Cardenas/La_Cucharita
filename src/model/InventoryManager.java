@@ -21,13 +21,8 @@ public class InventoryManager {
 	}
 	
 	public void addIngredient( Ingredient newIngredient ){
-		boolean alreadyExists=true;
-		for(int i=0;i<ingredients.size();i++) {
-			if(ingredients.get(i).getIngredientName().equalsIgnoreCase(newIngredient.getIngredientName())) {
-				alreadyExists=false;
-			}
-		}
-		if(alreadyExists) {
+		boolean alreadyExists= ingredientAlreadyExists(newIngredient);
+		if(alreadyExists==false) {
 			ingredients.add(newIngredient);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
@@ -44,6 +39,19 @@ public class InventoryManager {
 		}
 	}
 	
+	public boolean ingredientAlreadyExists(Ingredient newIngredient) {
+		boolean alreadyExists=false;
+		int count=0;
+		for(int i=0;i<ingredients.size();i++) {
+			if(ingredients.get(i).getIngredientName().equalsIgnoreCase(newIngredient.getIngredientName())) {
+				count++;
+			}
+		}
+		if(count>1) {
+			alreadyExists=true;
+		}
+		return alreadyExists;
+	}
 	
 	public int findIngredient( String ingredientName )
 	{

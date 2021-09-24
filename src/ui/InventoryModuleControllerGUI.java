@@ -9,18 +9,26 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Ingredient;
+import model.InventoryManager;
 import model.User;
 
 public class InventoryModuleControllerGUI {
 	
 	//FXML Attributes
+	
+	@FXML
+    private Pane inventoryModulePane;
+	
 	@FXML
 	private TableView<Ingredient> tvInventory;
 
@@ -37,7 +45,7 @@ public class InventoryModuleControllerGUI {
 	private TextField txtIngredientNameAdd;
 
 	@FXML
-	private ComboBox<?> cmbxUnits;
+	private TextField txtUnits;
 
 	@FXML
 	private TextField txtIngredientAmountAdd;
@@ -51,36 +59,60 @@ public class InventoryModuleControllerGUI {
 	//Attributes
 	private Stage inventoryModuleStage;
 	 
-	private ObservableList<Ingredient> observableList2;
+	private ObservableList<Ingredient> observableInventoryList;
 	
+	private InventoryManager inventoryManager;
 	
-	
-	public InventoryModuleControllerGUI()
-	{
-		inventoryModuleStage = new Stage();
-	}
-	  
-	
-	/*
-    private void initializeTableView() 
-    {
-		observableList2 = FXCollections.observableArrayList(staffUserManager.getUsers());
-		
-		tvInventory.setItems(observableList2);
-		tcIngredients.setCellValueFactory(new PropertyValueFactory<User,String>("ingredientName"));
-		tcAmount.setCellValueFactory(new PropertyValueFactory<User,String>("ingredientQT"));
-		tcUnits.setCellValueFactory(new PropertyValueFactory<User,String>("birthDay"));
-	}
+	private CucharitaGUI cucharitaGUI;
 
-	*/
+		
+		public InventoryModuleControllerGUI(CucharitaGUI cucharitaGUI){
+			setInventoryModuleStage(new Stage());
+			inventoryModulePane = new Pane();
+			inventoryManager= new InventoryManager();
+			this.cucharitaGUI = cucharitaGUI;
+		}
+		
+		
+	    public void initializeTableView() {
+			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
+			
+			tvInventory.setItems(observableInventoryList);
+			tcIngredients.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Name"));
+			tcAmount.setCellValueFactory(new PropertyValueFactory<Ingredient,Double>("Amount"));
+			tcUnits.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Units"));
+		}
+	
+	    public Stage getInventoryModuleStage() {
+			return inventoryModuleStage;
+		}
+
+
+		public void setInventoryModuleStage(Stage inventoryModuleStage) {
+			this.inventoryModuleStage = inventoryModuleStage;
+		}
 	
 	//FXML methods:
-	
-	
-	
-    @FXML
-    public void addIngredient(ActionEvent event) {
 
+	@FXML
+    public void addIngredient(ActionEvent event) {
+		String ingredientName= txtIngredientNameAdd.getText();
+		String ingredientUnits= txtUnits.getText();
+		double ingredientQT= Double.parseDouble(txtIngredientAmountAdd.getText());
+		initializeTableView();
+		if(ingredientName.equalsIgnoreCase(null) && ingredientUnits.equalsIgnoreCase(null) && ingredientQT<0) {
+			Alert alert = new Alert(AlertType.WARNING);
+	    	alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please fill in all the information asked");
+
+			alert.showAndWait();
+		}
+		else {
+			Ingredient newIngredient= new Ingredient(ingredientName,ingredientQT,ingredientUnits);
+			inventoryManager.addIngredient(newIngredient);
+			initializeTableView();
+		}
     }
 
     @FXML

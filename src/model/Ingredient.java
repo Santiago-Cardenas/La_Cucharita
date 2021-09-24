@@ -7,8 +7,7 @@ public class Ingredient {
 	private String ingredientUnits;
 	
 	
-	protected Ingredient(String ingredientName, double ingredientQT, String ingredientUnits) 
-	{
+	public Ingredient(String ingredientName, double ingredientQT, String ingredientUnits) {
 		this.ingredientName = ingredientName;
 		this.ingredientQT = ingredientQT;
 		this.ingredientUnits = ingredientUnits;

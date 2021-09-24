@@ -12,7 +12,7 @@ public class UserManager {
 
 	public UserManager() {
 		users = new ArrayList <User>();
-		User admin = new User("000","1","123","27-03-2002");
+		User admin = new User("000","1","000","27-03-2002");
 		users.add(admin);
 	}
 
