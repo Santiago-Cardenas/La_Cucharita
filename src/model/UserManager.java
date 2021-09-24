@@ -100,14 +100,22 @@ public class UserManager {
 		}
 	}
 	
-	public String toString() 
+			
+	public void sortById() 
 	{
-		String msg="NAME	ID		BIRTHDAY	PASSWORD\n";
-		
-		for (int i=0; i<users.size();i++) {
-			msg+=users.get(i).getUsername() + "	" + users.get(i).getId() + "	" + users.get(i).getBirthDay() + "	" +users.get(i).getPassword() + "\n";
+		int j;
+		User aux;
+		for(int i=1;i<users.size();i++) 
+		{
+			aux= users.get(i);
+			j=i-1;
+			while(j>=0 && (aux.compareByUserID(users.get(j)) < 0)) 
+			{
+				users.set(j+1, users.get(j));
+				j--;
+			}
+			users.set(j+1, aux);
 		}
-		return msg;
 	}
 
 }

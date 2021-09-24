@@ -76,7 +76,7 @@ public class InventoryManager {
 	
 	public void deleteIngredient( String ingredientName ) 
 	{
-		if( findIngredient( ingredientName ) != -1 )
+		if(  findIngredient( ingredientName ) != -1  )
 		{
 			ingredients.remove(findIngredient( ingredientName ));
 		}
@@ -95,7 +95,7 @@ public class InventoryManager {
 	{
 		int ingredientIndex = findIngredient(ingredientName);
 		
-		if( findIngredient( ingredientName ) != -1 )
+		if(  findIngredient( ingredientName ) != -1  )
 		{
 			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() + amountToIncrease;
 			
@@ -118,12 +118,23 @@ public class InventoryManager {
 	{
 		int ingredientIndex = findIngredient(ingredientName);
 		
-		if( findIngredient( ingredientName ) != -1 )
+		if( findIngredient( ingredientName ) != -1  )
 		{
+			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() != 0 ))
+			{
+				double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecrease;
 					
-			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecrease;
-					
-			ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+				ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+			}
+			else
+			{
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Not enough quantity");
+
+				alert.showAndWait();
+			}
 		}
 		else
 		{

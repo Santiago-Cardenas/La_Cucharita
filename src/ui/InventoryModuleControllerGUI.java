@@ -1,6 +1,8 @@
 package ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,17 +12,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Ingredient;
 import model.InventoryManager;
-import model.User;
 
 public class InventoryModuleControllerGUI {
 	
@@ -55,27 +57,35 @@ public class InventoryModuleControllerGUI {
 
 	@FXML
 	private TextField txtIngredientAmountEdit;
+	
+    @FXML
+    private ComboBox<String> cmbUnits;
 	  
 	//Attributes
 	private Stage inventoryModuleStage;
 	 
 	private ObservableList<Ingredient> observableInventoryList;
+		
+	private ObservableList<String> observableUnitsList;
 	
-	//private InventoryManager inventoryManager;
+	private InventoryManager inventoryManager;
 	
 	private CucharitaGUI cucharitaGUI;
-
+	
 		
 		public InventoryModuleControllerGUI(CucharitaGUI cucharitaGUI){
+			
 			setInventoryModuleStage(new Stage());
 			inventoryModulePane = new Pane();
-			//inventoryManager= new InventoryManager();
+			inventoryManager = new InventoryManager();
 			this.cucharitaGUI = cucharitaGUI;
+			
 		}
 		
 		
-	    public void initializeTableView() {
-			observableInventoryList = FXCollections.observableArrayList(cucharitaGUI.getInventoryManager().ingredients);
+	    public void initializeTableView() 
+	    {
+			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
 			
 			tvInventory.setItems(observableInventoryList);
 			tcIngredients.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientName"));
@@ -83,7 +93,18 @@ public class InventoryModuleControllerGUI {
 			tcUnits.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientUnits"));
 		}
 	
-	    public Stage getInventoryModuleStage() {
+	  
+	    public void initializeComboBox()
+	    {
+	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters), units");
+			cmbUnits.setValue("Choose an option");
+			cmbUnits.setItems(observableUnitsList);
+	    }
+	    
+	    
+
+
+		public Stage getInventoryModuleStage() {
 			return inventoryModuleStage;
 		}
 
@@ -94,14 +115,19 @@ public class InventoryModuleControllerGUI {
 	
 	//FXML methods:
 
+	
+	
 	@FXML
-    public void addIngredient(ActionEvent event) 
-	{
+    public void addIngredient(ActionEvent event) throws IOException {
+
 		String ingredientName= txtIngredientNameAdd.getText();
-		String ingredientUnits= txtUnits.getText();
-		double ingredientQT= Double.parseDouble(txtIngredientAmountAdd.getText());
+		String ingredientUnits= cmbUnits.getValue();
+		double ingredientQT= Double.parseDouble( txtIngredientAmountAdd.getText() );
+		
 		initializeTableView();
-		if(ingredientName.equalsIgnoreCase(null) && ingredientUnits.equalsIgnoreCase(null) && ingredientQT<0) {
+		
+		if(ingredientName.equalsIgnoreCase(null) && ingredientUnits.equalsIgnoreCase(null) && ingredientQT<0) 
+		{
 			Alert alert = new Alert(AlertType.WARNING);
 	    	alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
@@ -109,9 +135,11 @@ public class InventoryModuleControllerGUI {
 
 			alert.showAndWait();
 		}
-		else {
+		
+		else 
+		{
 			Ingredient newIngredient= new Ingredient(ingredientName,ingredientQT,ingredientUnits);
-			cucharitaGUI.getInventoryManager().addIngredient(newIngredient);
+			inventoryManager.addIngredient(newIngredient);
 			initializeTableView();
 		}
     }
@@ -121,19 +149,9 @@ public class InventoryModuleControllerGUI {
     {
     	String ingredientName = txtIngredientNameEdit.getText();
     	String amount = txtIngredientAmountEdit.getText();
-    	cucharitaGUI.getInventoryManager().decreaseIngredient(ingredientName, Double.parseDouble(amount));
+    	inventoryManager.decreaseIngredient(ingredientName, Double.parseDouble(amount));
      	initializeTableView();
     	tvInventory.refresh();
-    }
-
-    @FXML
-    public void deleteIngredient(ActionEvent event) 
-    {
-    	String ingredientName = txtIngredientNameEdit.getText();
-    	
-    	cucharitaGUI.getInventoryManager().deleteIngredient(ingredientName);
-    	
-    	initializeTableView();
     }
 
     @FXML
@@ -141,13 +159,22 @@ public class InventoryModuleControllerGUI {
     {
     	String ingredientName = txtIngredientNameEdit.getText();
     	String amount =  txtIngredientAmountEdit.getText();
-    	cucharitaGUI.getInventoryManager().increaseIngredient(ingredientName, Double.parseDouble(amount));
-    	System.out.println(cucharitaGUI.getInventoryManager().getIngredients().get(cucharitaGUI.getInventoryManager().findIngredient(ingredientName)).toString());
-    	
-    	
+    	inventoryManager.increaseIngredient(ingredientName, Double.parseDouble(amount));
+    		
     	initializeTableView();
     	tvInventory.refresh();
     	
+    }
+    
+    @FXML
+    public void deleteIngredient(ActionEvent event) 
+    {
+    	String ingredientName = txtIngredientNameEdit.getText();
+    	
+    	inventoryManager.deleteIngredient(ingredientName);
+    	
+    	initializeTableView();
+
     }
     
     @FXML
@@ -163,4 +190,6 @@ public class InventoryModuleControllerGUI {
 		
 		initializeTableView();
     }
+    
+ 
 }

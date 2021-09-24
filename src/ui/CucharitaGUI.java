@@ -25,7 +25,7 @@ public class CucharitaGUI {
     
     public UserManager userManager;
     
-    private InventoryManager inventoryManager; 
+    //private InventoryManager inventoryManager; 
     
   	private Stage loginStage;
      
@@ -52,7 +52,7 @@ public class CucharitaGUI {
     	staffModule = new StaffModuleControllerGUI(this);   
     	inventoryModule = new InventoryModuleControllerGUI(this);
     	userManager = new UserManager();
-    	inventoryManager = new InventoryManager();
+    	//inventoryManager = new InventoryManager();
     	loginStage = new Stage();
     	
 	}
@@ -114,6 +114,7 @@ public class CucharitaGUI {
 		loginStage.show(); 
 		
 		inventoryModule.initializeTableView();
+		inventoryModule.initializeComboBox();
 	}
 
 	@FXML
@@ -144,9 +145,10 @@ public class CucharitaGUI {
 		return loginStage;
 	}
 	
+	/*
 	public InventoryManager getInventoryManager()
 	{
 		return inventoryManager;
 	}
-
+	 */
 }

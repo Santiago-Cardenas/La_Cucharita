@@ -187,7 +187,7 @@ public class StaffModuleControllerGUI {
     	fxmlLoader.setController(this);
     	Parent employeesList = fxmlLoader.load();
     	staffModulePane.getChildren().setAll( employeesList );
-    	
+    	cucharitaGUI.userManager.sortById();
     	initializeTableView();
     }
 	

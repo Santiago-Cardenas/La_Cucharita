@@ -39,5 +39,8 @@ public class User {
 		this.birthDay = birthDay;
 	}
 	
+	public int compareByUserID(User otherUser) {
+		return id.compareTo(otherUser.getId());
+	}
 	
 }
