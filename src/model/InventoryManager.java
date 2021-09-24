@@ -95,19 +95,59 @@ public class InventoryManager {
 	{
 		int ingredientIndex = findIngredient(ingredientName);
 		
-		double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() + amountToIncrease;
-				
-		ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+		if( findIngredient( ingredientName ) != -1 )
+		{
+			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() + amountToIncrease;
+			
+			ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+		}
+		else
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("The ingredient does'nt exist");
+
+			alert.showAndWait();
+		}
+		
+
 	}
 	
 	public void decreaseIngredient(String ingredientName, double amountToDecrease )
 	{
 		int ingredientIndex = findIngredient(ingredientName);
 		
-		double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecrease;
-				
-		ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+		if( findIngredient( ingredientName ) != -1 )
+		{
+					
+			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecrease;
+					
+			ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+		}
+		else
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("The ingredient does'nt exist");
+
+			alert.showAndWait();
+		}
+
 	}
-	
-	
+	/*
+	public String toString()
+	{
+
+		String info ="Ingredient		Amount			Units\n";
+			
+		for (int i=0; i<ingredients.size();i++) 
+		{
+			info+=ingredients.get(i).getIngredientName() + "	" + ingredients.get(i).getIngredientQT() + "	" + ingredients.get(i).getIngredientUnits() +  "\n";
+		}
+			
+		return info;
+	}
+	*/
 }

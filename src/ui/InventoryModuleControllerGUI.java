@@ -61,7 +61,7 @@ public class InventoryModuleControllerGUI {
 	 
 	private ObservableList<Ingredient> observableInventoryList;
 	
-	private InventoryManager inventoryManager;
+	//private InventoryManager inventoryManager;
 	
 	private CucharitaGUI cucharitaGUI;
 
@@ -69,18 +69,18 @@ public class InventoryModuleControllerGUI {
 		public InventoryModuleControllerGUI(CucharitaGUI cucharitaGUI){
 			setInventoryModuleStage(new Stage());
 			inventoryModulePane = new Pane();
-			inventoryManager= new InventoryManager();
+			//inventoryManager= new InventoryManager();
 			this.cucharitaGUI = cucharitaGUI;
 		}
 		
 		
 	    public void initializeTableView() {
-			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
+			observableInventoryList = FXCollections.observableArrayList(cucharitaGUI.getInventoryManager().ingredients);
 			
 			tvInventory.setItems(observableInventoryList);
-			tcIngredients.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Name"));
-			tcAmount.setCellValueFactory(new PropertyValueFactory<Ingredient,Double>("Amount"));
-			tcUnits.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("Units"));
+			tcIngredients.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientName"));
+			tcAmount.setCellValueFactory(new PropertyValueFactory<Ingredient,Double>("ingredientQT"));
+			tcUnits.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientUnits"));
 		}
 	
 	    public Stage getInventoryModuleStage() {
@@ -95,7 +95,8 @@ public class InventoryModuleControllerGUI {
 	//FXML methods:
 
 	@FXML
-    public void addIngredient(ActionEvent event) {
+    public void addIngredient(ActionEvent event) 
+	{
 		String ingredientName= txtIngredientNameAdd.getText();
 		String ingredientUnits= txtUnits.getText();
 		double ingredientQT= Double.parseDouble(txtIngredientAmountAdd.getText());
@@ -110,23 +111,56 @@ public class InventoryModuleControllerGUI {
 		}
 		else {
 			Ingredient newIngredient= new Ingredient(ingredientName,ingredientQT,ingredientUnits);
-			inventoryManager.addIngredient(newIngredient);
+			cucharitaGUI.getInventoryManager().addIngredient(newIngredient);
 			initializeTableView();
 		}
     }
 
     @FXML
-    public void decreaseIngredientAmount(ActionEvent event) {
-
+    public void decreaseIngredientAmount(ActionEvent event) 
+    {
+    	String ingredientName = txtIngredientNameEdit.getText();
+    	String amount = txtIngredientAmountEdit.getText();
+    	cucharitaGUI.getInventoryManager().decreaseIngredient(ingredientName, Double.parseDouble(amount));
+     	initializeTableView();
+    	tvInventory.refresh();
     }
 
     @FXML
-    public void deleteIngredient(ActionEvent event) {
-
+    public void deleteIngredient(ActionEvent event) 
+    {
+    	String ingredientName = txtIngredientNameEdit.getText();
+    	
+    	cucharitaGUI.getInventoryManager().deleteIngredient(ingredientName);
+    	
+    	initializeTableView();
     }
 
     @FXML
-    public void increaseIngredientAmount(ActionEvent event) {
-
+    public void increaseIngredientAmount(ActionEvent event) 
+    {
+    	String ingredientName = txtIngredientNameEdit.getText();
+    	String amount =  txtIngredientAmountEdit.getText();
+    	cucharitaGUI.getInventoryManager().increaseIngredient(ingredientName, Double.parseDouble(amount));
+    	System.out.println(cucharitaGUI.getInventoryManager().getIngredients().get(cucharitaGUI.getInventoryManager().findIngredient(ingredientName)).toString());
+    	
+    	
+    	initializeTableView();
+    	tvInventory.refresh();
+    	
+    }
+    
+    @FXML
+    public void goBackToModules(ActionEvent event) throws IOException 
+    {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
+		fxmlLoader.setController(cucharitaGUI);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		cucharitaGUI.getLoginStage().setScene(scene);
+		cucharitaGUI.getLoginStage().setTitle("task Manager");
+		cucharitaGUI.getLoginStage().show(); 
+		
+		initializeTableView();
     }
 }

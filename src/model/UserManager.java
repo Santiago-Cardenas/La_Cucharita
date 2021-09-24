@@ -100,7 +100,8 @@ public class UserManager {
 		}
 	}
 	
-	public String toString() {
+	public String toString() 
+	{
 		String msg="NAME	ID		BIRTHDAY	PASSWORD\n";
 		
 		for (int i=0; i<users.size();i++) {

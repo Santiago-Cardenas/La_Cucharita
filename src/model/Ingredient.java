@@ -32,7 +32,15 @@ public class Ingredient {
 		this.ingredientUnits = ingredientUnits;
 	}
 
-	
+	public String toString()
+	{
+
+		String info ="Ingredient		Amount			Units\n";
+			
+			info+= ingredientName + "	" + ingredientQT + "	" + ingredientUnits +  "\n";
+		
+		return info;
+	}
 	
 	
 	
