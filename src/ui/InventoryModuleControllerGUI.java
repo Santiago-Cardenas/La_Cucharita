@@ -85,18 +85,21 @@ public class InventoryModuleControllerGUI {
 		
 	    public void initializeTableView() 
 	    {
+	    	inventoryManager.sortByQuantity();
 			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
 			
 			tvInventory.setItems(observableInventoryList);
 			tcIngredients.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientName"));
 			tcAmount.setCellValueFactory(new PropertyValueFactory<Ingredient,Double>("ingredientQT"));
 			tcUnits.setCellValueFactory(new PropertyValueFactory<Ingredient,String>("ingredientUnits"));
+			
+			
 		}
 	
 	  
 	    public void initializeComboBox()
 	    {
-	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters), units");
+	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters)", "Units");
 			cmbUnits.setValue("Choose an option");
 			cmbUnits.setItems(observableUnitsList);
 	    }
@@ -142,6 +145,7 @@ public class InventoryModuleControllerGUI {
 			inventoryManager.addIngredient(newIngredient);
 			initializeTableView();
 		}
+		clearFields();
     }
 
     @FXML
@@ -149,21 +153,47 @@ public class InventoryModuleControllerGUI {
     {
     	String ingredientName = txtIngredientNameEdit.getText();
     	String amount = txtIngredientAmountEdit.getText();
-    	inventoryManager.decreaseIngredient(ingredientName, Double.parseDouble(amount));
-     	initializeTableView();
-    	tvInventory.refresh();
+    	
+    	if( ingredientName.toString().length() > 0 && amount.toString().length() > 0 )
+    	{
+        	inventoryManager.decreaseIngredient(ingredientName, amount);
+         	initializeTableView();
+        	tvInventory.refresh();
+    	}
+    	else
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please fill in all the information asked");
+
+			alert.showAndWait();
+    	}
+    	clearFields();
     }
 
     @FXML
     public void increaseIngredientAmount(ActionEvent event) 
     {
-    	String ingredientName = txtIngredientNameEdit.getText();
-    	String amount =  txtIngredientAmountEdit.getText();
-    	inventoryManager.increaseIngredient(ingredientName, Double.parseDouble(amount));
-    		
-    	initializeTableView();
-    	tvInventory.refresh();
-    	
+		String ingredientName = txtIngredientNameEdit.getText();
+		String amount =  txtIngredientAmountEdit.getText();
+		
+    	if( ingredientName.toString().length() > 0 && amount.toString().length() > 0)
+    	{
+    		inventoryManager.increaseIngredient(ingredientName, amount);
+    		initializeTableView();
+    		tvInventory.refresh();
+    	}
+    	else
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please fill in all the information asked");
+
+			alert.showAndWait();
+    	}
+    	clearFields();
     }
     
     @FXML
@@ -174,6 +204,7 @@ public class InventoryModuleControllerGUI {
     	inventoryManager.deleteIngredient(ingredientName);
     	
     	initializeTableView();
+    	clearFields();
 
     }
     
@@ -189,7 +220,18 @@ public class InventoryModuleControllerGUI {
 		cucharitaGUI.getLoginStage().show(); 
 		
 		initializeTableView();
+		
     }
     
+    public void clearFields()
+    {
+    	txtIngredientNameAdd.clear();
+    	txtIngredientAmountAdd.clear();
+    	txtIngredientAmountEdit.clear();
+    	txtIngredientNameEdit.clear();
+    	cmbUnits.getSelectionModel().clearSelection();
+    }
+    
+
  
 }

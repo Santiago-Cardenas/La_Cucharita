@@ -91,13 +91,13 @@ public class InventoryManager {
 		}
 	}
 	
-	public void increaseIngredient( String ingredientName, double amountToIncrease )
+	public void increaseIngredient( String ingredientName, String amountToIncrease )
 	{
 		int ingredientIndex = findIngredient(ingredientName);
-		
+		double amountToIncreaseNum = Double.parseDouble(amountToIncrease);
 		if(  findIngredient( ingredientName ) != -1  )
 		{
-			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() + amountToIncrease;
+			double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() + amountToIncreaseNum;
 			
 			ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
 		}
@@ -114,15 +114,16 @@ public class InventoryManager {
 
 	}
 	
-	public void decreaseIngredient(String ingredientName, double amountToDecrease )
+	public void decreaseIngredient(String ingredientName, String amountToDecrease )
 	{
 		int ingredientIndex = findIngredient(ingredientName);
+		double amountToDecreaseNum = Double.parseDouble(amountToDecrease);
 		
 		if( findIngredient( ingredientName ) != -1  )
 		{
-			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() != 0 ))
+			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() >= amountToDecreaseNum) )
 			{
-				double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecrease;
+				double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecreaseNum;
 					
 				ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
 			}
@@ -147,18 +148,25 @@ public class InventoryManager {
 		}
 
 	}
-	/*
-	public String toString()
+	//Selection
+	public void sortByQuantity()
 	{
-
-		String info ="Ingredient		Amount			Units\n";
-			
-		for (int i=0; i<ingredients.size();i++) 
+		int pos = 0;
+		while(pos < ingredients.size())
 		{
-			info+=ingredients.get(i).getIngredientName() + "	" + ingredients.get(i).getIngredientQT() + "	" + ingredients.get(i).getIngredientUnits() +  "\n";
+			Ingredient max = ingredients.get(pos);
+		
+			for(int i = pos+1; i < ingredients.size(); i++)
+			{
+				if( ingredients.get(i).getIngredientQT() > max.getIngredientQT())
+				{
+					Ingredient temp = ingredients.get(i);
+					ingredients.set(i,max);
+					max = temp;
+				}
+			}
+			ingredients.set(pos, max);
+			pos++;
 		}
-			
-		return info;
 	}
-	*/
 }
