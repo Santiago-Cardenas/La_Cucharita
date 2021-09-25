@@ -90,6 +90,7 @@ public class MenuModuleControllerGUI {
 
 	private CucharitaGUI cucharitaGUI;
 
+	//UUID.randomUUID().toString();
 
 	public MenuModuleControllerGUI(CucharitaGUI cucharitaGUI){
 
@@ -191,7 +192,7 @@ public class MenuModuleControllerGUI {
 	}
 
 	@FXML
-	void addIngredientToNewDish(ActionEvent event) {
+	public void addIngredientToNewDish(ActionEvent event) {
 		String ingredientName= cmbIngredient.getValue();
 		double ingredientQT= Double.parseDouble(txtIngredientAmount.getText());
 		if(ingredientQT<=0) {
@@ -212,11 +213,13 @@ public class MenuModuleControllerGUI {
 				tvIngredientsPreview.refresh();
 			}
 		}
-
+		//FALTA RESTAR EN EL INVENTARIO
+			cmbIngredient.getSelectionModel().clearSelection();
+			txtIngredientAmount.clear();
 	}
 
 	@FXML
-	void createNewDishToMenu(ActionEvent event) {
+	public void createNewDishToMenu(ActionEvent event) {
 		String dishName= txtNewDishName.getText();
 		double dishPrice= Double.parseDouble(txtNewDishPrice.getText());
 
@@ -236,6 +239,9 @@ public class MenuModuleControllerGUI {
 			newIngredientsToPreview.clear();
 			initializeIngredientsTableView();
 		}
+		
+		lblDishNamePreview.setText("");
+		lblDishPricePreview.setText("");
 
 	}
 

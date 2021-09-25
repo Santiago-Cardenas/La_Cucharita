@@ -79,13 +79,12 @@ public class InventoryModuleControllerGUI {
 		}
 		
 		
-<<<<<<< HEAD
-	    public void initializeTableView() 
+
+	    	
+
+	    public void initializeTableView()  
 	    {
 	    	inventoryManager.sortByQuantity();
-=======
-	    public void initializeTableView()  {
->>>>>>> 3cc0d7ad19d5c638029d9e086dfdf072f501d49c
 			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
 			
 			tvInventory.setItems(observableInventoryList);
@@ -99,11 +98,8 @@ public class InventoryModuleControllerGUI {
 	  
 	    public void initializeComboBox()
 	    {
-<<<<<<< HEAD
+
 	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters)", "Units");
-=======
-	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters)", "units");
->>>>>>> 3cc0d7ad19d5c638029d9e086dfdf072f501d49c
 			cmbUnits.setValue("Choose an option");
 			cmbUnits.setItems(observableUnitsList);
 	    }
