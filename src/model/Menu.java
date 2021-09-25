@@ -6,13 +6,11 @@ import java.util.List;
 public class Menu{
 	private String menuName;
 	private double menuPrice;
-	public List<String> ingredientsUsed = new ArrayList<String>();
-	public List<Double> ingredientsQT= new ArrayList<Double>();
-	public Menu(String menuName, double menuPrice, ArrayList<String> ingredientsUsed, ArrayList<Double> ingredientsQT) {
+	public ArrayList<Ingredient> ingredientsUsed= new ArrayList<Ingredient>();;
+	public Menu(String menuName, double menuPrice, ArrayList<Ingredient> ingredientsUsed) {
 		this.menuName = menuName;
 		this.menuPrice = menuPrice;
 		this.ingredientsUsed = ingredientsUsed;
-		this.ingredientsQT = ingredientsQT;
 	}
 
 	public String getMenuName() {
@@ -28,21 +26,14 @@ public class Menu{
 		this.menuPrice = menuPrice;
 	}
 
-	public List<String> getIngredientsUsed() {
+	public List<Ingredient> getIngredientsUsed() {
 		return ingredientsUsed;
 	}
 
-	public void setIngredientsUsed(List<String> ingredientsUsed) {
+	public void setIngredientsUsed(ArrayList<Ingredient> ingredientsUsed) {
 		this.ingredientsUsed = ingredientsUsed;
 	}
 
-	public List<Double> getIngredientsQT() {
-		return ingredientsQT;
-	}
-
-	public void setIngredientsQT(List<Double> ingredientsQT) {
-		this.ingredientsQT = ingredientsQT;
-	}
 
 	
 	

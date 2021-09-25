@@ -9,19 +9,27 @@ import javafx.scene.control.Alert.AlertType;
 public class MenuManager extends InventoryManager{
 	private List<Menu> menu;
 	
-	public MenuManager(String menuName, double menuPrice) {
+	public MenuManager() {
 		menu = new ArrayList<Menu>();
 	}
 	
+	public List<Menu> getMenu() {
+		return menu;
+	}
+
+	public void setMenu(List<Menu> menu) {
+		this.menu = menu;
+	}
+
 	public void addToMenu(Menu dish) {
 		menu.add(dish);
 	}
 	
-	public void createMenu(String dishName,ArrayList<String> ingredientsNames,ArrayList<Double> ingredientsQT,double dishPrice) {
+	public void createMenu(String dishName,double dishPrice,ArrayList<Ingredient> ingredientsNames) {
 		boolean sameName=checkForSameMenuName(dishName);
 		
 		if(sameName==false) {
-			Menu newMenu = new Menu(dishName,dishPrice,ingredientsNames,ingredientsQT);
+			Menu newMenu = new Menu(dishName,dishPrice,ingredientsNames);
 			addToMenu(newMenu);
 			
 			Alert alert = new Alert(AlertType.INFORMATION);

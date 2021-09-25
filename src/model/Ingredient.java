@@ -13,6 +13,11 @@ public class Ingredient {
 		this.ingredientUnits = ingredientUnits;
 	}
 	
+	public Ingredient(String ingredientName, double ingredientQT) {
+		this.ingredientName = ingredientName;
+		this.ingredientQT = ingredientQT;
+	}
+	
 	public String getIngredientName() {
 		return ingredientName;
 	}

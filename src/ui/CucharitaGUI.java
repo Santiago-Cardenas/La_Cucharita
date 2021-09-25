@@ -11,7 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.InventoryManager;
 import model.UserManager;
 
 
@@ -21,7 +20,9 @@ public class CucharitaGUI {
 	
     private StaffModuleControllerGUI staffModule;
     
-    private InventoryModuleControllerGUI inventoryModule;
+    public InventoryModuleControllerGUI inventoryModule;
+    
+    public MenuModuleControllerGUI menuModule;
     
     public UserManager userManager;
     
@@ -51,6 +52,7 @@ public class CucharitaGUI {
     {
     	staffModule = new StaffModuleControllerGUI(this);   
     	inventoryModule = new InventoryModuleControllerGUI(this);
+    	menuModule = new MenuModuleControllerGUI(this);
     	userManager = new UserManager();
     	//inventoryManager = new InventoryManager();
     	loginStage = new Stage();
@@ -118,8 +120,17 @@ public class CucharitaGUI {
 	}
 
 	@FXML
-	void openMenuModule(ActionEvent event) {
-
+	void openMenuModule(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menuModule.fxml"));
+		fxmlLoader.setController(menuModule);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		loginStage.setScene(scene);
+		loginStage.setTitle("InventoryModule");
+		loginStage.show(); 
+		
+		menuModule.initializeTableView();
+		menuModule.initializeComboBox();
 	}
 
 	@FXML
