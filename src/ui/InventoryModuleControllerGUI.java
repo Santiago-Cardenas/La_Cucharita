@@ -1,9 +1,6 @@
 package ui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,7 +13,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -68,7 +64,7 @@ public class InventoryModuleControllerGUI {
 		
 	private ObservableList<String> observableUnitsList;
 	
-	private InventoryManager inventoryManager;
+	public InventoryManager inventoryManager;
 	
 	private CucharitaGUI cucharitaGUI;
 	
@@ -83,9 +79,13 @@ public class InventoryModuleControllerGUI {
 		}
 		
 		
+<<<<<<< HEAD
 	    public void initializeTableView() 
 	    {
 	    	inventoryManager.sortByQuantity();
+=======
+	    public void initializeTableView()  {
+>>>>>>> 3cc0d7ad19d5c638029d9e086dfdf072f501d49c
 			observableInventoryList = FXCollections.observableArrayList(inventoryManager.getIngredients());
 			
 			tvInventory.setItems(observableInventoryList);
@@ -99,7 +99,11 @@ public class InventoryModuleControllerGUI {
 	  
 	    public void initializeComboBox()
 	    {
+<<<<<<< HEAD
 	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters)", "Units");
+=======
+	    	observableUnitsList = FXCollections.observableArrayList("Kg (Kilograms)","g (grams)","ml (mililiters)", "units");
+>>>>>>> 3cc0d7ad19d5c638029d9e086dfdf072f501d49c
 			cmbUnits.setValue("Choose an option");
 			cmbUnits.setItems(observableUnitsList);
 	    }

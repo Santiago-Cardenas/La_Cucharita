@@ -47,7 +47,7 @@ public class InventoryManager {
 				count++;
 			}
 		}
-		if(count>1) {
+		if(count>=1) {
 			alreadyExists=true;
 		}
 		return alreadyExists;
