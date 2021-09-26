@@ -1,21 +1,22 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class InventoryManager {
 	
-	public List<Ingredient> ingredients;
+	public ArrayList<Ingredient> ingredients;
 	
 	public InventoryManager()
 	{
 		ingredients = new ArrayList<Ingredient>();
+		Ingredient newIngredient= new Ingredient("Papa",2,"Units");
+		ingredients.add(newIngredient);
 	}
 
-	public List<Ingredient> getIngredients()
+	public ArrayList<Ingredient> getIngredients()
 	{
 		return ingredients;
 	}
@@ -114,21 +115,17 @@ public class InventoryManager {
 
 	}
 	
-	public void decreaseIngredient(String ingredientName, String amountToDecrease )
-	{
+	public void decreaseIngredient(String ingredientName, String amountToDecrease ){
 		int ingredientIndex = findIngredient(ingredientName);
 		double amountToDecreaseNum = Double.parseDouble(amountToDecrease);
 		
-		if( findIngredient( ingredientName ) != -1  )
-		{
-			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() >= amountToDecreaseNum) )
-			{
+		if( findIngredient( ingredientName ) != -1  ){
+			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() >= amountToDecreaseNum) ){
 				double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecreaseNum;
 					
 				ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
 			}
-			else
-			{
+			else{
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Information Dialog");
 				alert.setHeaderText(null);
@@ -137,16 +134,28 @@ public class InventoryManager {
 				alert.showAndWait();
 			}
 		}
-		else
-		{
+		else{
 			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Information Dialog");
+			alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("The ingredient does'nt exist");
 
 			alert.showAndWait();
 		}
 
+	}
+	
+	public void decreaseIngredientQTBasedOnOrder(String ingredientName, double amountToDecrease ){
+		int ingredientIndex = findIngredient(ingredientName);
+		double amountToDecreaseNum = amountToDecrease;
+		
+		if( findIngredient( ingredientName ) != -1  ){
+			if(( ingredients.get( findIngredient(ingredientName)).getIngredientQT() >= amountToDecreaseNum) ){
+				double newIngredientAmount = ingredients.get(ingredientIndex).getIngredientQT() - amountToDecreaseNum;
+					
+				ingredients.get(ingredientIndex).setIngredientQT(newIngredientAmount); 
+			}
+		}
 	}
 	//Selection
 	public void sortByQuantity()

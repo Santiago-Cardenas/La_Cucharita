@@ -32,9 +32,9 @@
             <Font name="Arial Black" size="25.0" />
          </font></Label>
       <TextField fx:id="txtIngredientAmount" layoutX="135.0" layoutY="444.0" prefHeight="25.0" prefWidth="54.0" />
-      <Button layoutX="226.0" layoutY="442.0" mnemonicParsing="false" onAction="#addIngredientToNewDish" prefHeight="25.0" prefWidth="33.0" style="-fx-background-color: lightgray;" text="+" textFill="#ff5e00">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="197.0" layoutY="442.0" mnemonicParsing="false" onAction="#addIngredientToNewDish" prefHeight="25.0" prefWidth="63.0" style="-fx-background-color: lightgray;" text="SAVE" textFill="#ff5e00">
          <font>
-            <Font name="Microsoft JhengHei UI Bold" size="15.0" />
+            <Font name="Microsoft JhengHei UI Bold" size="12.0" />
          </font></Button>
       <Button layoutX="462.0" layoutY="414.0" mnemonicParsing="false" onAction="#createNewDishToMenu" prefHeight="38.0" prefWidth="94.0" style="-fx-background-color: lightgray;" text="CREATE DISH" textFill="#ff5e00">
          <font>

@@ -1,6 +1,6 @@
 package model;
 
-public class Ingredient {
+public class Ingredient{
 
 	private String ingredientName;
 	private double ingredientQT;

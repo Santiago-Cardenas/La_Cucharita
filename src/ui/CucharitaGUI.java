@@ -17,6 +17,7 @@ import model.UserManager;
 public class CucharitaGUI {
    
     //Attributes
+	public UserManager userManager;
 	
     private StaffModuleControllerGUI staffModule;
     
@@ -24,7 +25,7 @@ public class CucharitaGUI {
     
     public MenuModuleControllerGUI menuModule;
     
-    public UserManager userManager;
+    public OrderModuleControllerGUI orderModule;
     
     //private InventoryManager inventoryManager; 
     
@@ -50,9 +51,10 @@ public class CucharitaGUI {
     
     public CucharitaGUI() 
     {
-    	staffModule = new StaffModuleControllerGUI(this);   
+    	staffModule = new StaffModuleControllerGUI(this);  
     	inventoryModule = new InventoryModuleControllerGUI(this);
     	menuModule = new MenuModuleControllerGUI(this);
+    	orderModule = new OrderModuleControllerGUI(this);
     	userManager = new UserManager();
     	//inventoryManager = new InventoryManager();
     	loginStage = new Stage();
@@ -117,6 +119,7 @@ public class CucharitaGUI {
 		
 		inventoryModule.initializeTableView();
 		inventoryModule.initializeComboBox();
+		inventoryModule.getTvInventory().refresh();
 	}
 
 	@FXML
@@ -126,7 +129,7 @@ public class CucharitaGUI {
 		Parent root = fxmlLoader.load();
 		Scene scene = new Scene(root);
 		loginStage.setScene(scene);
-		loginStage.setTitle("InventoryModule");
+		loginStage.setTitle("MenuModule");
 		loginStage.show(); 
 		
 		menuModule.initializeTableView();
@@ -134,8 +137,17 @@ public class CucharitaGUI {
 	}
 
 	@FXML
-	void openOrdersModule(ActionEvent event) 
-	{
+	void openOrdersModule(ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ordersModule.fxml"));
+		fxmlLoader.setController(orderModule);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		loginStage.setScene(scene);
+		loginStage.setTitle("OrderModule");
+		loginStage.show(); 
+		
+		orderModule.initializeTableView();
+		orderModule.initializeComboBox();
 
 	}
 

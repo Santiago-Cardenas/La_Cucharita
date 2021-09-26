@@ -7,10 +7,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class MenuManager extends InventoryManager{
-	private List<Menu> menu;
+	public List<Menu> menu;
 	
 	public MenuManager() {
 		menu = new ArrayList<Menu>();
+		ArrayList<Ingredient> ingredient = new ArrayList<Ingredient>();
+		ingredient.add(ingredients.get(0));
+		System.out.println(ingredient.get(0).getIngredientName()+"LA PAPA");
+		Menu newMenu = new Menu("combo 1", 10, ingredient);
+		menu.add(newMenu);
 	}
 	
 	public List<Menu> getMenu() {
@@ -39,8 +44,8 @@ public class MenuManager extends InventoryManager{
 			alert.showAndWait();
 		}
 		else if(sameName==true) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
 			alert.setContentText("There is already a Dish with that name");
 

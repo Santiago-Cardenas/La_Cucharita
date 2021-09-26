@@ -158,7 +158,7 @@ public class InventoryModuleControllerGUI {
     	{
         	inventoryManager.decreaseIngredient(ingredientName, amount);
          	initializeTableView();
-        	tvInventory.refresh();
+         	tvInventory.refresh();
     	}
     	else
     	{
@@ -231,6 +231,22 @@ public class InventoryModuleControllerGUI {
     	txtIngredientNameEdit.clear();
     	cmbUnits.getSelectionModel().clearSelection();
     }
+
+
+
+	public TableView<Ingredient> getTvInventory() {
+		return tvInventory;
+	}
+
+
+
+
+
+	public void setTvInventory(TableView<Ingredient> tvInventory) {
+		this.tvInventory = tvInventory;
+	}
+    
+    
     
 
  

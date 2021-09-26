@@ -83,23 +83,24 @@ public class MenuModuleControllerGUI {
 	private ObservableList<String> observableIngredientsList;
 
 	private ObservableList<Ingredient> observableIngredientsListToPreview;
-
-	private ArrayList<Ingredient> newIngredientsToPreview;
-
-	private MenuManager menuManager;
+	
+	ArrayList<Ingredient> newIngredientsToPreview;
+	
+	public MenuManager menuManager;
 
 	private CucharitaGUI cucharitaGUI;
-
-	//UUID.randomUUID().toString();
+	
+	private boolean dishNameReadyToCreate=false;
+	
+	private boolean dishIngredientsReadyToCreate=false;
 
 	public MenuModuleControllerGUI(CucharitaGUI cucharitaGUI){
 
 		setMenuModuleStage(new Stage());
 		menuModulePane = new Pane();
 		menuManager = new MenuManager();
-		newIngredientsToPreview= new ArrayList<Ingredient>();
-		this.cucharitaGUI = cucharitaGUI;
-
+		newIngredientsToPreview = new ArrayList<Ingredient>();
+		this.cucharitaGUI = cucharitaGUI;		
 	}
 
 	public void initializeTableView() {
@@ -163,6 +164,7 @@ public class MenuModuleControllerGUI {
 			if(verifyInput(dishName, dishPrice)==true) {
 				lblDishNamePreview.setText(dishName);
 				lblDishPricePreview.setText(dishPricelbl);
+				dishNameReadyToCreate=true;
 			}
 		}
 	}
@@ -194,8 +196,15 @@ public class MenuModuleControllerGUI {
 	@FXML
 	public void addIngredientToNewDish(ActionEvent event) {
 		String ingredientName= cmbIngredient.getValue();
-		double ingredientQT= Double.parseDouble(txtIngredientAmount.getText());
-		if(ingredientQT<=0) {
+		if(ingredientName.equals("Choose an option")) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select an ingredient");
+
+			alert.showAndWait();
+		}
+		else if(txtIngredientAmount.getText().equals("")) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
@@ -204,26 +213,54 @@ public class MenuModuleControllerGUI {
 			alert.showAndWait();
 		}
 		else {
-			if(checkIfIngredientAlreadyExists(ingredientName, ingredientQT)==false) {
-				Ingredient newIngredientToPreview = new Ingredient(ingredientName,ingredientQT);
-				newIngredientsToPreview.add(newIngredientToPreview);
-				initializeIngredientsTableView();
+			double ingredientQT= Double.parseDouble(txtIngredientAmount.getText());
+
+			if(ingredientQT<=0) {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Warning Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Please select a valid ingredient QT");
+
+				alert.showAndWait();
 			}
 			else {
-				tvIngredientsPreview.refresh();
+				if(checkIfIngredientAlreadyExists(ingredientName, ingredientQT)==false) {
+					Ingredient newIngredient = new Ingredient(ingredientName,ingredientQT);
+					newIngredientsToPreview.add(newIngredient);
+					initializeIngredientsTableView();
+					dishIngredientsReadyToCreate=true;
+				}			
+				else {
+					initializeIngredientsTableView();
+					tvIngredientsPreview.refresh();
+					dishIngredientsReadyToCreate=true;
+				}
+				cmbIngredient.setValue("Choose an option");
+				txtIngredientAmount.clear();
 			}
 		}
-		//FALTA RESTAR EN EL INVENTARIO
-			cmbIngredient.getSelectionModel().clearSelection();
-			txtIngredientAmount.clear();
 	}
 
 	@FXML
 	public void createNewDishToMenu(ActionEvent event) {
-		String dishName= txtNewDishName.getText();
-		double dishPrice= Double.parseDouble(txtNewDishPrice.getText());
+		if(dishIngredientsReadyToCreate==true && dishNameReadyToCreate==true) {
+			String dishName= txtNewDishName.getText();
+			double dishPrice= Double.parseDouble(txtNewDishPrice.getText());
 
-		if(newIngredientsToPreview.isEmpty()) {
+			menuManager.createMenu(dishName,dishPrice,newIngredientsToPreview);
+			initializeTableView();
+			newIngredientsToPreview.clear();
+			initializeIngredientsTableView();
+
+
+			lblDishNamePreview.setText("");
+			lblDishPricePreview.setText("");
+			txtNewDishName.setText("");
+			txtNewDishPrice.setText("");
+			dishIngredientsReadyToCreate=false;
+			dishNameReadyToCreate=false;
+		}
+		else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
 			alert.setHeaderText(null);
@@ -231,17 +268,6 @@ public class MenuModuleControllerGUI {
 
 			alert.showAndWait();
 		}
-
-		else 
-		{
-			menuManager.createMenu(dishName,dishPrice,newIngredientsToPreview);
-			initializeTableView();
-			newIngredientsToPreview.clear();
-			initializeIngredientsTableView();
-		}
-		
-		lblDishNamePreview.setText("");
-		lblDishPricePreview.setText("");
 
 	}
 
@@ -251,7 +277,7 @@ public class MenuModuleControllerGUI {
 		double qt=ingredientQT;
 		for(int i=0;i<newIngredientsToPreview.size() && !found;i++) {
 			if(ingredientName.equalsIgnoreCase(newIngredientsToPreview.get(i).getIngredientName())) {
-				qt+=newIngredientsToPreview.get(i).getIngredientQT();
+				qt=Double.parseDouble(txtIngredientAmount.getText());
 				newIngredientsToPreview.get(i).setIngredientQT(qt);
 				found=true;
 			}
@@ -279,7 +305,6 @@ public class MenuModuleControllerGUI {
 		cucharitaGUI.getLoginStage().setTitle("task Manager");
 		cucharitaGUI.getLoginStage().show(); 
 
-		initializeTableView();
 	}
 
 
