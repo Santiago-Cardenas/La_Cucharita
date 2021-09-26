@@ -52,12 +52,12 @@ private InventoryManager inventoryManager;
 		double requestedIngredientsQT=0;
 		double ingredientsLeft=0;
 		int menuRequestedQT=0;
-		for (int i =0; i<menusRequested.size() && !canServe;i++) {
+		for (int i =0; i<menusRequested.size();i++) {
 			System.out.println("Entro al for de menu");
 			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
 			System.out.println(menuRequestedQT + "menuQT");
 			msg+="For the " + menusRequested.get(i).getMenuName() + " dish\n";
-			for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size() && canServe==false;j++) {
+			for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
 				System.out.println("Entro al for de ingredientes");
 				currentIngredientsQT=inventoryManager.getIngredients().get(j).getIngredientQT();
 				requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
@@ -91,18 +91,17 @@ private InventoryManager inventoryManager;
 		for (int i =0; i<menusRequested.size();i++) {
 			System.out.println("entro cuando serve es true");
 			System.out.println("entro al for del menu");
-			System.out.println(menuRequestedQT + "menuQT");
 			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
 			System.out.println(menuRequestedQT + "menuQT");
 			for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
 				requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
 				System.out.println(requestedIngredientsQT + "requested Ingredient QT");
-				System.out.println(requestedIngredientsQT + "Antes del cambio");
+				System.out.println("Antes del cambio");
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientName());
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientQT());
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientUnits());
 				inventoryManager.decreaseIngredientQTBasedOnOrder(menusRequested.get(i).getIngredientsUsed().get(j).getIngredientName(),requestedIngredientsQT);
-				System.out.println(requestedIngredientsQT + "Despues del cambio");
+				System.out.println("Despues del cambio");
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientName());
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientQT());
 				System.out.println(inventoryManager.getIngredients().get(0).getIngredientUnits());
