@@ -79,6 +79,8 @@ public class OrderModuleControllerGUI {
 
 	private CucharitaGUI cucharitaGUI;
 	
+	private InventoryModuleControllerGUI inventoryModule;
+	
 	private boolean orderReadyToCreate=false;
 
 	public OrderModuleControllerGUI(CucharitaGUI cucharitaGUI) {
@@ -206,6 +208,7 @@ public class OrderModuleControllerGUI {
 			initializeTableView();
 			newOrderToPreview.clear();
 			initializeOrderPreviewTableView();
+			inventoryModule.getTvInventory().refresh();
 
 			cmbDishName.setValue("Choose an option");
 			txtDishAmount.clear();
