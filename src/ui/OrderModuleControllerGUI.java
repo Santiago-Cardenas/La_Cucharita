@@ -24,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Ingredient;
 import model.Menu;
 import model.Order;
 import model.OrderManager;
@@ -201,10 +202,11 @@ public class OrderModuleControllerGUI {
 
 	@FXML
 	void addOrderToList(ActionEvent event) {
+		boolean okToCreate=checkIfServingIsPosible(newOrderToPreview);
 		if(orderReadyToCreate==true) {
 			LocalDate facturationDay = facturationDate.getValue();
 			
-			orderManager.createOrder(newOrderToPreview,facturationDay.toString());
+			orderManager.createOrder(newOrderToPreview,facturationDay.toString(),okToCreate);
 			initializeTableView();
 			newOrderToPreview.clear();
 			initializeOrderPreviewTableView();
@@ -222,7 +224,73 @@ public class OrderModuleControllerGUI {
 			alert.showAndWait();
 		}
 	}
+	
+	public boolean checkIfServingIsPosible(ArrayList<Menu> menusRequested) {
+		boolean canServe=true;
+		String msg="";
+		double currentIngredientsQT=0;
+		double requestedIngredientsQT=0;
+		double ingredientsLeft=0;
+		int menuRequestedQT=0;
+		System.out.println("CHECKIFSERVINGPOSIBLE\n-------------------------------------\n-------------------------------------\n");
+		for (int i =0; i<menusRequested.size();i++) {
+			System.out.println("Entro al for de menu");
+			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
+			System.out.println(menuRequestedQT + " menuQT");
+			msg+="For the " + menusRequested.get(i).getMenuName() + " dish\n";
+			for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
+				System.out.println("Entro al for de ingredientes");
+				currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
+				requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
+				ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
+				System.out.println(currentIngredientsQT + "los que hay");
+				System.out.println(requestedIngredientsQT + "pedidos");
+				System.out.println(ingredientsLeft + "sobrantes");
+				if(ingredientsLeft<0) {
+					System.out.println("Entro al if de cuando no hay suficientes ingredientes");
+					msg+="There is not enough: \n" + menusRequested.get(i).getIngredientsUsed().get(j).getIngredientName() + "\n";
+					canServe=false;
+				}
+			}
+			msg+="To make the order";
+		}
+		if(canServe==false){
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText(msg);
 
+			alert.showAndWait();
+		}
+		else {
+			decreaseIngredientQT(menusRequested);
+		}
+		return canServe;
+	}
+	
+	public void decreaseIngredientQT(ArrayList<Menu> menusRequested) {
+		double requestedIngredientsQT=0;
+		double currentIngredientsQT=0;
+		double ingredientsLeft=0;
+		int menuRequestedQT=0;
+		String ingredientName="";
+		String ingredientUnits="";
+		System.out.println("DECREASEINGREDIENTQT\n-------------------------------------\n-------------------------------------\n");
+		for (int i =0; i<menusRequested.size();i++) {
+			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
+			for(int p=0; p<cucharitaGUI.inventoryModule.inventoryManager.getIngredients().size();p++) {
+				for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
+					if(menusRequested.get(i).getIngredientsUsed().get(j).getIngredientName().equals(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName())) {
+						currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
+						requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
+						ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
+						ingredientUnits=menusRequested.get(i).getIngredientsUsed().get(j).getIngredientUnits();
+						cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(i).setIngredientQT(ingredientsLeft);
+					}
+				}
+			}
+		}
+	}
 	@FXML
 	void changeStatusToDelivered(ActionEvent event) {
 
