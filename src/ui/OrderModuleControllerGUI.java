@@ -92,6 +92,7 @@ public class OrderModuleControllerGUI {
 	}
 
 	public void initializeTableView() {
+		orderManager.insertionSortCode();
 		observableOrdersList = FXCollections.observableArrayList(orderManager.getOrder());
 
 		tvOrders.setItems(observableOrdersList);
@@ -277,6 +278,8 @@ public class OrderModuleControllerGUI {
 						requestedIngredientsQT= menuRequestedQT * newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT();
 						ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
 						if(ingredientsLeft<0) {
+							System.out.println("Entro al if de no hay suficientes ingredientes");
+							System.out.println(ingredientsLeft);
 							msg+="There is not enough: \n" + newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName() + "\n";
 							canServe=false;
 						}
@@ -341,6 +344,7 @@ public class OrderModuleControllerGUI {
 					orderManager.getOrder().get(i).setOrderState(OrderState.DELIVERED);
 				}
 			}
+			initializeTableView();
 			tvOrders.refresh();
 		}
 	}
@@ -362,6 +366,7 @@ public class OrderModuleControllerGUI {
 					orderManager.getOrder().get(i).setOrderState(OrderState.ON_GOING);
 				}
 			}
+			initializeTableView();
 			tvOrders.refresh();
 		}
 	}
@@ -383,6 +388,7 @@ public class OrderModuleControllerGUI {
 					orderManager.getOrder().get(i).setOrderState(OrderState.PENDING);
 				}
 			}
+			initializeTableView();
 			tvOrders.refresh();
 		}
 	}

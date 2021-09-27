@@ -32,6 +32,7 @@ public List<Order> order;
 		if(okToCreateOrder==true) {
 			Order newOrder = new Order(menusRequested,OrderState.PENDING,facturationDate);
 			addToOrders(newOrder);
+			System.out.println(newOrder.getOrderState().getValue());
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
@@ -39,6 +40,24 @@ public List<Order> order;
 
 			alert.showAndWait();
 		}
+	}
+	
+	public void insertionSortCode() {
+
+		Order aux;
+		int j;
+		for(int i = 1; i <order.size();i++){
+			aux = order.get(i); 
+			j = i-1;
+
+			while( (j >= 0)  && (aux.getOrderState().getValue() < order.get(j).getOrderState().getValue()) ){
+				order.set(j+1, order.get(j));
+				j--;
+				//printArray();
+			}
+			order.set(j+1, aux);
+		}
 
 	}
+	
 }
