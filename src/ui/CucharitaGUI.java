@@ -155,6 +155,7 @@ public class CucharitaGUI {
 		
 		orderModule.initializeTableView();
 		orderModule.initializeComboBox();
+		orderModule.initializeOrderCodesComboBox();
 
 	}
 

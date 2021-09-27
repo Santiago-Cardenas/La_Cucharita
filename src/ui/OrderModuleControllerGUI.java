@@ -16,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -73,6 +72,8 @@ public class OrderModuleControllerGUI {
 	private ObservableList<Order> observableOrdersList;
 
 	private ObservableList<String> observableMenuListToPreview;
+	
+	private ObservableList<String> observableOrderListToPreview;
 
 	private ArrayList<Menu> newOrderToPreview;
 
@@ -125,7 +126,27 @@ public class OrderModuleControllerGUI {
 		cmbDishName.setValue("Choose an option");
 		cmbDishName.setItems(observableMenuListToPreview);
 	}
+	
+	public void initializeOrderCodesComboBox(){
+		observableOrderListToPreview = FXCollections.<String>observableArrayList();
+		String orderCodeList="";
+		String[] parts = null;
+		int orderArrayListSize=orderManager.getOrder().size();
+		for(int i=0; i<orderArrayListSize;i++) {
+			orderCodeList += orderManager.getOrder().get(i).getCode()+"++";
+		}
 
+		if(orderArrayListSize>0) {
+			parts = orderCodeList.split("\\+\\+");
+		}
+
+		for(int i=0; i<orderArrayListSize;i++) {
+			observableOrderListToPreview.add(parts[i]);
+		}
+		cmbOrderCode.setValue("Choose an option");
+		cmbOrderCode.setItems(observableOrderListToPreview);
+	}
+	
 	@FXML
 	void addDishToOrder(ActionEvent event) {
 		String dishName= cmbDishName.getValue();
@@ -211,6 +232,8 @@ public class OrderModuleControllerGUI {
 			initializeTableView();
 			newOrderToPreview.clear();
 			initializeOrderPreviewTableView();
+			initializeOrderCodesComboBox();
+			
 
 			cmbDishName.setValue("Choose an option");
 			txtDishAmount.clear();
@@ -303,17 +326,65 @@ public class OrderModuleControllerGUI {
 
 	@FXML
 	void changeStatusToDelivered(ActionEvent event) {
+		if(cmbOrderCode.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select an order");
 
+			alert.showAndWait();
+		}
+		else {
+			String code=cmbOrderCode.getValue();
+			for(int i=0;i<orderManager.getOrder().size();i++) {
+				if(orderManager.getOrder().get(i).getCode().equals(code)){
+					orderManager.getOrder().get(i).setOrderState(OrderState.DELIVERED);
+				}
+			}
+			tvOrders.refresh();
+		}
 	}
 
 	@FXML
 	void changeStatusToInProcess(ActionEvent event) {
+		if(cmbOrderCode.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select an order");
 
+			alert.showAndWait();
+		}
+		else {
+			String code=cmbOrderCode.getValue();
+			for(int i=0;i<orderManager.getOrder().size();i++) {
+				if(orderManager.getOrder().get(i).getCode().equals(code)){
+					orderManager.getOrder().get(i).setOrderState(OrderState.ON_GOING);
+				}
+			}
+			tvOrders.refresh();
+		}
 	}
 
 	@FXML
 	void changeStatusToPending(ActionEvent event) {
+		if(cmbOrderCode.getValue().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Please select an order");
 
+			alert.showAndWait();
+		}
+		else {
+			String code=cmbOrderCode.getValue();
+			for(int i=0;i<orderManager.getOrder().size();i++) {
+				if(orderManager.getOrder().get(i).getCode().equals(code)){
+					orderManager.getOrder().get(i).setOrderState(OrderState.PENDING);
+				}
+			}
+			tvOrders.refresh();
+		}
 	}
 
 	public Stage getOrderModuleStage() {
