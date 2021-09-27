@@ -9,11 +9,9 @@ import javafx.scene.control.Alert.AlertType;
 public class OrderManager {
 	
 public List<Order> order;
-private InventoryManager inventoryManager;
 	
 	public OrderManager() {
 		order = new ArrayList<Order>();
-		inventoryManager= new InventoryManager();
 	}
 
 	public List<Order> getOrder() {

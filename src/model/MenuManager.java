@@ -13,7 +13,6 @@ public class MenuManager extends InventoryManager{
 		menu = new ArrayList<Menu>();
 		ArrayList<Ingredient> ingredient = new ArrayList<Ingredient>();
 		ingredient.add(ingredients.get(0));
-		System.out.println(ingredient.get(0).getIngredientName()+"LA PAPA");
 		Menu newMenu = new Menu("combo 1", 10, ingredient);
 		menu.add(newMenu);
 	}
@@ -32,9 +31,10 @@ public class MenuManager extends InventoryManager{
 	
 	public void createMenu(String dishName,double dishPrice,ArrayList<Ingredient> ingredientsNames) {
 		boolean sameName=checkForSameMenuName(dishName);
-		
+		@SuppressWarnings("unchecked")
+		ArrayList<Ingredient> ingredientToStore = (ArrayList<Ingredient>)ingredientsNames.clone();
 		if(sameName==false) {
-			Menu newMenu = new Menu(dishName,dishPrice,ingredientsNames);
+			Menu newMenu = new Menu(dishName,dishPrice,ingredientToStore);
 			addToMenu(newMenu);
 			
 			Alert alert = new Alert(AlertType.INFORMATION);

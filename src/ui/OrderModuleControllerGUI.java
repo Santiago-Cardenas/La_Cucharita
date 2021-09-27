@@ -24,7 +24,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Ingredient;
 import model.Menu;
 import model.Order;
 import model.OrderManager;
@@ -34,9 +33,9 @@ public class OrderModuleControllerGUI {
 
 	@FXML
 	private Pane orderModulePane;
-	
+
 	@FXML
-    private DatePicker facturationDate;
+	private DatePicker facturationDate;
 
 	@FXML
 	private TableView<Menu> tvMenuOrder;
@@ -51,6 +50,9 @@ public class OrderModuleControllerGUI {
 	private ComboBox<String> cmbDishName;
 
 	@FXML
+	private ComboBox<String> cmbOrderCode;
+
+	@FXML
 	private TextField txtDishAmount;
 
 	@FXML
@@ -62,26 +64,22 @@ public class OrderModuleControllerGUI {
 	@FXML
 	private TableColumn<Order, OrderState> tcOrderStatus;
 
-	@FXML
-	private Label lblOrderInfo;
 
 	//Attributes
 	private Stage orderModuleStage;
 
 	private ObservableList<Menu> observableMenuList;
-	
+
 	private ObservableList<Order> observableOrdersList;
 
 	private ObservableList<String> observableMenuListToPreview;
-	
+
 	private ArrayList<Menu> newOrderToPreview;
 
 	private OrderManager orderManager;
 
 	private CucharitaGUI cucharitaGUI;
-	
-	private InventoryModuleControllerGUI inventoryModule;
-	
+
 	private boolean orderReadyToCreate=false;
 
 	public OrderModuleControllerGUI(CucharitaGUI cucharitaGUI) {
@@ -91,7 +89,7 @@ public class OrderModuleControllerGUI {
 		newOrderToPreview= new ArrayList<>();
 		this.cucharitaGUI = cucharitaGUI;
 	}
-	
+
 	public void initializeTableView() {
 		observableOrdersList = FXCollections.observableArrayList(orderManager.getOrder());
 
@@ -99,7 +97,7 @@ public class OrderModuleControllerGUI {
 		tcOrderInfo.setCellValueFactory(new PropertyValueFactory<Order,UUID>("code"));
 		tcOrderStatus.setCellValueFactory(new PropertyValueFactory<Order,OrderState>("orderState"));
 	}
-	
+
 	public void initializeOrderPreviewTableView() {
 		observableMenuList = FXCollections.observableArrayList(newOrderToPreview);
 
@@ -107,7 +105,7 @@ public class OrderModuleControllerGUI {
 		tcDishNameOrder.setCellValueFactory(new PropertyValueFactory<Menu,String>("menuName"));
 		tcDishQTOrder.setCellValueFactory(new PropertyValueFactory<Menu,Integer>("menuQTRequested"));
 	}
-	
+
 	public void initializeComboBox(){
 		observableMenuListToPreview = FXCollections.<String>observableArrayList();
 		String menuNameList="";
@@ -144,7 +142,10 @@ public class OrderModuleControllerGUI {
 				int dishQT= Integer.parseInt(txtDishAmount.getText());
 				if(checkIfDishAlreadyExists(dishName,dishQT)==false) {
 					for(int i=0;i<cucharitaGUI.menuModule.menuManager.getMenu().size();i++) {
+						System.out.println(cucharitaGUI.menuModule.menuManager.getMenu().get(i));
+						System.out.println(cucharitaGUI.menuModule.menuManager.getMenu().get(i).getMenuName());
 						if(cucharitaGUI.menuModule.menuManager.getMenu().get(i).getMenuName().equals(dishName)){
+							System.out.println("Entro al for de crear orden");
 							cucharitaGUI.menuModule.menuManager.getMenu().get(i).setMenuQTRequested(dishQT);
 							newOrderToPreview.add(cucharitaGUI.menuModule.menuManager.getMenu().get(i));
 						}
@@ -163,7 +164,7 @@ public class OrderModuleControllerGUI {
 		}
 
 	}
-	
+
 	public boolean verifyInput(String dishName,String dishQT) { 
 		boolean allinput=true;
 		if(dishName.equals("Choose an option")) {
@@ -186,7 +187,7 @@ public class OrderModuleControllerGUI {
 		}
 		return allinput;
 	}
-	
+
 	public boolean checkIfDishAlreadyExists(String dishName,int dishQT) { 
 		boolean found=false;
 		int qt=dishQT;
@@ -202,10 +203,10 @@ public class OrderModuleControllerGUI {
 
 	@FXML
 	void addOrderToList(ActionEvent event) {
-		boolean okToCreate=checkIfServingIsPosible(newOrderToPreview);
+		boolean okToCreate=checkIfServingIsPosible();
 		if(orderReadyToCreate==true) {
 			LocalDate facturationDay = facturationDate.getValue();
-			
+
 			orderManager.createOrder(newOrderToPreview,facturationDay.toString(),okToCreate);
 			initializeTableView();
 			newOrderToPreview.clear();
@@ -224,32 +225,39 @@ public class OrderModuleControllerGUI {
 			alert.showAndWait();
 		}
 	}
-	
-	public boolean checkIfServingIsPosible(ArrayList<Menu> menusRequested) {
+
+	public boolean checkIfServingIsPosible() {
 		boolean canServe=true;
 		String msg="";
 		double currentIngredientsQT=0;
 		double requestedIngredientsQT=0;
 		double ingredientsLeft=0;
 		int menuRequestedQT=0;
-		System.out.println("CHECKIFSERVINGPOSIBLE\n-------------------------------------\n-------------------------------------\n");
-		for (int i =0; i<menusRequested.size();i++) {
+		for (int i =0; i<newOrderToPreview.size();i++) {
 			System.out.println("Entro al for de menu");
-			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
-			System.out.println(menuRequestedQT + " menuQT");
-			msg+="For the " + menusRequested.get(i).getMenuName() + " dish\n";
-			for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
-				System.out.println("Entro al for de ingredientes");
-				currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
-				requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
-				ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
-				System.out.println(currentIngredientsQT + "los que hay");
-				System.out.println(requestedIngredientsQT + "pedidos");
-				System.out.println(ingredientsLeft + "sobrantes");
-				if(ingredientsLeft<0) {
-					System.out.println("Entro al if de cuando no hay suficientes ingredientes");
-					msg+="There is not enough: \n" + menusRequested.get(i).getIngredientsUsed().get(j).getIngredientName() + "\n";
-					canServe=false;
+			System.out.println(newOrderToPreview.get(i).getIngredientsUsed().size());
+			menuRequestedQT=newOrderToPreview.get(i).getMenuQTRequested();
+			msg+="For the " + newOrderToPreview.get(i).getMenuName() + " dish\n";
+			for(int p=0; p<cucharitaGUI.inventoryModule.inventoryManager.getIngredients().size();p++) {
+				System.out.println("Entro al for de array ingrediente\n"+ "ingrediente del array de ingredientes");
+				System.out.println(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName());
+				System.out.println(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientQT());
+				for(int j=0;j<newOrderToPreview.get(i).getIngredientsUsed().size();j++) {
+					System.out.println("Entro al for de cada ingrediente\n"+ "ingrediente del array de ingredientes del menu");
+					System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName());
+					System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT());
+					if(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName().equals(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName())) {
+						System.out.println("Entro al if de ingrediente");
+						System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName());
+						System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT());
+						currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
+						requestedIngredientsQT= menuRequestedQT * newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT();
+						ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
+						if(ingredientsLeft<0) {
+							msg+="There is not enough: \n" + newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName() + "\n";
+							canServe=false;
+						}
+					}
 				}
 			}
 			msg+="To make the order";
@@ -263,34 +271,36 @@ public class OrderModuleControllerGUI {
 			alert.showAndWait();
 		}
 		else {
-			decreaseIngredientQT(menusRequested);
+			decreaseIngredientQT();
 		}
 		return canServe;
 	}
-	
-	public void decreaseIngredientQT(ArrayList<Menu> menusRequested) {
+
+	public void decreaseIngredientQT() {
 		double requestedIngredientsQT=0;
 		double currentIngredientsQT=0;
 		double ingredientsLeft=0;
 		int menuRequestedQT=0;
+		@SuppressWarnings("unused")
 		String ingredientName="";
+		@SuppressWarnings("unused")
 		String ingredientUnits="";
-		System.out.println("DECREASEINGREDIENTQT\n-------------------------------------\n-------------------------------------\n");
-		for (int i =0; i<menusRequested.size();i++) {
-			menuRequestedQT=menusRequested.get(i).getMenuQTRequested();
+		for (int i =0; i<newOrderToPreview.size();i++) {
+			menuRequestedQT=newOrderToPreview.get(i).getMenuQTRequested();
 			for(int p=0; p<cucharitaGUI.inventoryModule.inventoryManager.getIngredients().size();p++) {
-				for(int j=0;j<menusRequested.get(i).getIngredientsUsed().size();j++) {
-					if(menusRequested.get(i).getIngredientsUsed().get(j).getIngredientName().equals(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName())) {
+				for(int j=0;j<newOrderToPreview.get(i).getIngredientsUsed().size();j++) {
+					if(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName().equals(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName())) {
 						currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
-						requestedIngredientsQT= menuRequestedQT * menusRequested.get(i).getIngredientsUsed().get(j).getIngredientQT();
+						requestedIngredientsQT= menuRequestedQT * newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT();
 						ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
-						ingredientUnits=menusRequested.get(i).getIngredientsUsed().get(j).getIngredientUnits();
-						cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(i).setIngredientQT(ingredientsLeft);
+						ingredientUnits=newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientUnits();
+						cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).setIngredientQT(ingredientsLeft);
 					}
 				}
 			}
 		}
 	}
+
 	@FXML
 	void changeStatusToDelivered(ActionEvent event) {
 

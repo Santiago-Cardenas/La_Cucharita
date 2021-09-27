@@ -229,7 +229,7 @@ public class MenuModuleControllerGUI {
 					newIngredientsToPreview.add(newIngredient);
 					initializeIngredientsTableView();
 					dishIngredientsReadyToCreate=true;
-				}			
+					}			
 				else {
 					initializeIngredientsTableView();
 					tvIngredientsPreview.refresh();

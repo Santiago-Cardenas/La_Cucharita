@@ -78,7 +78,14 @@ public class CucharitaGUI {
     {
     	String userId = txtUserLogin.getText();
     	String password = pFLogin.getText();
-    	
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
+		fxmlLoader.setController(this);
+		Parent root = fxmlLoader.load();
+		Scene scene = new Scene(root);
+		loginStage.setScene(scene);
+		loginStage.setTitle("Task Manager");
+		loginStage.show(); 
+		/*
     	if(userManager.accountLogIn(userId,password))
     	{
     		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
@@ -89,6 +96,7 @@ public class CucharitaGUI {
     		loginStage.setTitle("Task Manager");
     		loginStage.show(); 
     	}
+    	*/
     	
     }
     
@@ -119,7 +127,6 @@ public class CucharitaGUI {
 		
 		inventoryModule.initializeTableView();
 		inventoryModule.initializeComboBox();
-		inventoryModule.getTvInventory().refresh();
 	}
 
 	@FXML

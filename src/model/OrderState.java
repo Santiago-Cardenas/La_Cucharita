@@ -2,7 +2,7 @@ package model;
 
 public enum OrderState{
 
-	PENDING(3),ON_GOING(2),DELIVERD(1);
+	PENDING(3),ON_GOING(2),DELIVERED(1);
 
 	private final int id;
 	
