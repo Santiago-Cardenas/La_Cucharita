@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 public class User {
 	
 	
 	private String username,password,birthDay,id;
 	private int pedidosEntregados;
 	private double dineroTotalDeCombosVendidos;
+	public ArrayList <String> orderDates;
 	
 	
 	
@@ -60,6 +63,14 @@ public class User {
 
 	public void setDineroTotalDeCombosVendidos(double dineroTotalDeCombosVendidos) {
 		this.dineroTotalDeCombosVendidos = dineroTotalDeCombosVendidos;
+	}
+
+	public ArrayList<String> getOrderDates() {
+		return orderDates;
+	}
+
+	public void setOrderDates(ArrayList<String> orderDates) {
+		this.orderDates = orderDates;
 	}
 	
 }
