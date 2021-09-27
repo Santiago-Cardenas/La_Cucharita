@@ -270,8 +270,8 @@ public class CucharitaGUI {
 		int pos=1;
 
 		for(int i=0; i<userManager.getUsers().size();i++) {
-			if(userManager.getUsers().get(i).getPedidosEntregados()>=0) {
-				report+= pos +". ID " + userManager.getUsers().get(i).getId() + " has delivered a total of " +  userManager.getUsers().get(i).getPedidosEntregados() + " and collected a total of " + userManager.getUsers().get(i).getDineroTotalDeCombosVendidos() + "$\n";
+			if(userManager.getUsers().get(i).getPedidosEntregados()>0) {
+				report+= pos +". ID " + userManager.getUsers().get(i).getId() + " has delivered a total of " +  userManager.getUsers().get(i).getPedidosEntregados() + " orders and collected a total of " + userManager.getUsers().get(i).getDineroTotalDeCombosVendidos() + "$\n";
 				pos++;
 			}
 		}
@@ -290,9 +290,9 @@ public class CucharitaGUI {
 					  "		REPORT B\n"+
 				      "===========================\n";
 		int pos=1;
-
+		System.out.println(menuModule.menuManager.getMenu().size());
 		for(int i=0; i<menuModule.menuManager.getMenu().size();i++) {
-				report+= pos +". Dish Name " + menuModule.menuManager.getMenu().get(i).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(i).getTotalQTRequested() + " and the total money colleted from this dish is: " + menuModule.menuManager.getMenu().get(i).getTotalMoneyPaid() + "$\n";
+				report+= pos +". Dish Name: " + menuModule.menuManager.getMenu().get(i).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(i).getTotalQTRequested() + " times and the total of money colleted from this dish is: " + menuModule.menuManager.getMenu().get(i).getTotalMoneyPaid() + "$\n";
 				pos++;
 
 		}
@@ -302,7 +302,7 @@ public class CucharitaGUI {
 	public void generateReportB() throws IOException{
 		File file = new File (REPORT_B_FILE_NAME);
 		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(exportReportA().getBytes());
+		fos.write(exportReportB().getBytes());
 		fos.close();
 	}
 

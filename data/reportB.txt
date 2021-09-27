@@ -1,0 +1,4 @@
+===========================
+		REPORT B
+===========================
+1. Dish Name Combo 1 has been requested a total of 0 and the total money colleted from this dish is: 0.0$
