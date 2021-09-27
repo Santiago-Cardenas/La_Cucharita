@@ -18,6 +18,7 @@ public class User {
 		this.password = password;
 		this.id = id;
 		this.birthDay = birthDay;
+		orderDates= new ArrayList<String>();
 	}
 	
 	public String getUsername() {

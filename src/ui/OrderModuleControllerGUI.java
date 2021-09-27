@@ -337,8 +337,8 @@ public class OrderModuleControllerGUI {
 		}
 		else {
 			String code=cmbOrderCode.getValue();
-			LocalDate facturationDay = facturationDate.getValue();
 			for(int i=0;i<orderManager.getOrder().size();i++) {
+				String facturationDay =orderManager.getOrder().get(i).getOrderDate() ;
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
 					for(int j=0;j<orderManager.getOrder().get(i).getMenusRequested().size();j++) {
 						precioDePedido+=orderManager.getOrder().get(i).getMenusRequested().get(j).getMenuPrice();
@@ -353,7 +353,7 @@ public class OrderModuleControllerGUI {
 					}
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setPedidosEntregados(cantidadDePedidosEntregados+1);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioDePedido);
-					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getOrderDates().add(facturationDay.toString());
+					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getOrderDates().add(facturationDay);
 					cucharitaGUI.exportOrdersData();
 				}
 			}
