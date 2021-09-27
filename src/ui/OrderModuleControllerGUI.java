@@ -329,6 +329,7 @@ public class OrderModuleControllerGUI {
 
 	@FXML
 	void changeStatusToDelivered(ActionEvent event) {
+		double precioDePedido=0;
 		if(cmbOrderCode.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
@@ -341,7 +342,16 @@ public class OrderModuleControllerGUI {
 			String code=cmbOrderCode.getValue();
 			for(int i=0;i<orderManager.getOrder().size();i++) {
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
+					for(int j=0;j<orderManager.getOrder().get(i).getMenusRequested().size();j++) {
+						precioDePedido+=orderManager.getOrder().get(i).getMenusRequested().get(j).getMenuPrice();
+					}
 					orderManager.getOrder().get(i).setOrderState(OrderState.DELIVERED);
+					int userLoggedInPos = cucharitaGUI.userManager.findUser(cucharitaGUI.getUserLoggedIn());
+					int cantidadDePedidosEntregados =cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getPedidosEntregados();
+					double cantidadDeDineroRecaudado =cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getDineroTotalDeCombosVendidos();
+					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setPedidosEntregados(cantidadDePedidosEntregados+1);
+					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioDePedido);
+					
 				}
 			}
 			initializeTableView();

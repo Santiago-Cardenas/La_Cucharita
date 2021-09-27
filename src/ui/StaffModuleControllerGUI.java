@@ -167,7 +167,7 @@ public class StaffModuleControllerGUI {
         	
         	User newUser = new User(id,username, password, bday.toString()); 
         	cucharitaGUI.userManager.addNewUser(newUser);
-        	
+        	cucharitaGUI.exportUsersData();
         	Alert alert = new Alert(AlertType.INFORMATION);
         	alert.setTitle("Information Dialog");
     		alert.setHeaderText(null);

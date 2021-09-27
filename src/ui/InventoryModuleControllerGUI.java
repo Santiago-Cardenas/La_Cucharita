@@ -144,6 +144,7 @@ public class InventoryModuleControllerGUI {
 			Ingredient newIngredient= new Ingredient(ingredientName,ingredientQT,ingredientUnits);
 			inventoryManager.addIngredient(newIngredient);
 			initializeTableView();
+			cucharitaGUI.exportIngredientsData();
 		}
 		clearFields();
     }

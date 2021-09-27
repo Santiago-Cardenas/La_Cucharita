@@ -1,5 +1,7 @@
 package ui;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,19 @@ public class Main extends Application{
     public Main()
     {
     	cucharitagui = new CucharitaGUI();
+    	try {
+			cucharitagui.importUsersData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+    	try {
+			cucharitagui.importIngredientsData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
 	public static void main(String [] args)

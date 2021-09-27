@@ -6,15 +6,11 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class MenuManager extends InventoryManager{
+public class MenuManager{
 	public List<Menu> menu;
 	
 	public MenuManager() {
 		menu = new ArrayList<Menu>();
-		ArrayList<Ingredient> ingredient = new ArrayList<Ingredient>();
-		ingredient.add(ingredients.get(0));
-		Menu newMenu = new Menu("combo 1", 10, ingredient);
-		menu.add(newMenu);
 	}
 	
 	public List<Menu> getMenu() {

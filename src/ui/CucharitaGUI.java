@@ -1,5 +1,8 @@
 package ui;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +14,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Ingredient;
+import model.User;
 import model.UserManager;
 
 
@@ -27,7 +32,15 @@ public class CucharitaGUI {
     
     public OrderModuleControllerGUI orderModule;
     
-    //private InventoryManager inventoryManager; 
+    public String userLoggedIn;
+
+	private String USERS_DATA_CSV_PATH = "data/UsersDataExported.csv";
+    
+    private String INGREDIENTS_DATA_CSV_PATH = "data/IngredientsDataExported.csv";
+    
+	public String BILLBOARD_FILE_NAME = "data/billboard.bbd";
+	
+	public String BILLBOARD_REPORT_FILE_NAME = "data/report.txt";
     
   	private Stage loginStage;
      
@@ -56,7 +69,6 @@ public class CucharitaGUI {
     	menuModule = new MenuModuleControllerGUI(this);
     	orderModule = new OrderModuleControllerGUI(this);
     	userManager = new UserManager();
-    	//inventoryManager = new InventoryManager();
     	loginStage = new Stage();
     	
 	}
@@ -78,16 +90,10 @@ public class CucharitaGUI {
     {
     	String userId = txtUserLogin.getText();
     	String password = pFLogin.getText();
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
-		fxmlLoader.setController(this);
-		Parent root = fxmlLoader.load();
-		Scene scene = new Scene(root);
-		loginStage.setScene(scene);
-		loginStage.setTitle("Task Manager");
-		loginStage.show(); 
-		/*
+		
     	if(userManager.accountLogIn(userId,password))
     	{
+    		setUserLoggedIn(userId);
     		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskManager.fxml"));
     		fxmlLoader.setController(this);
     		Parent root = fxmlLoader.load();
@@ -96,7 +102,7 @@ public class CucharitaGUI {
     		loginStage.setTitle("Task Manager");
     		loginStage.show(); 
     	}
-    	*/
+    	
     	
     }
     
@@ -176,10 +182,82 @@ public class CucharitaGUI {
 		return loginStage;
 	}
 	
-	/*
-	public InventoryManager getInventoryManager()
-	{
-		return inventoryManager;
+	public void importUsersData() throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader (USERS_DATA_CSV_PATH));
+		String line = br.readLine();
+		int count=0;
+		while (line != null) {
+			count++;
+			String[] parts = line.split("\\|");
+			if (count > 1) {
+				User newUser = new User(parts[0], parts[1], parts[2], parts[3]);
+				userManager.addNewUser(newUser);
+			}
+			line = br.readLine();
+		}
+		br.close();
 	}
-	 */
+	
+	public void importIngredientsData() throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader (INGREDIENTS_DATA_CSV_PATH));
+		String line = br.readLine();
+		int count=0;
+		while (line != null) {
+			count++;
+			String[] parts = line.split("\\|");
+			if (count > 1) {
+				double qt = Double.parseDouble(parts[1]);
+				Ingredient newIngredient = new Ingredient(parts[0], qt, parts[2]);
+				inventoryModule.inventoryManager.addIngredient(newIngredient);
+			}
+			line = br.readLine();
+		}
+		br.close();
+	}
+	
+	public void exportUsersData() throws IOException {
+		FileWriter fw = new FileWriter(USERS_DATA_CSV_PATH,false);
+		fw.write("ID|USERNAME|PASSWORD|BIRTHDAY\n");
+		for (int i = 0; i < userManager.getUsers().size(); i++) {
+			User myUser = userManager.getUsers().get(i);
+			fw.write(myUser.getId() + "|" + myUser.getPassword() + "|" + myUser.getPassword() + "|" + myUser.getBirthDay() + "\n");
+		}
+		fw.close();
+	}
+	
+	public void exportIngredientsData() throws IOException {
+		FileWriter fw = new FileWriter(INGREDIENTS_DATA_CSV_PATH,false);
+		fw.write("NAME|QT|UNITS\n");
+		for (int i = 0; i < userManager.getUsers().size(); i++) {
+			Ingredient myIngredient = inventoryModule.inventoryManager.getIngredients().get(i);
+			fw.write(myIngredient.getIngredientName()+ "|" + myIngredient.getIngredientQT() + "|" + myIngredient.getIngredientUnits() + "\n");
+		}
+		fw.close();
+	}
+	
+	public String getUserLoggedIn() {
+		return userLoggedIn;
+	}
+
+	public void setUserLoggedIn(String userLoggedIn) {
+		this.userLoggedIn = userLoggedIn;
+	}
+	/*	
+	public String exportDangerousBillboardsReport() {
+		String report="===========================\n"+
+					  "DANGEROUS BILLBOARD REPORT\n"+
+					  "===========================\n"+
+					  "The dangerous billboard are:\n";
+		int pos=1;
+		for(int i=0; i<billboards.size();i++) {
+			
+			double area=billboards.get(i).calculateArea();
+			if(area>=160) {
+				report+= pos +". Billboard " + billboards.get(i).getBrand() + " with area " + area + "\n";
+				pos++;
+			}
+		}
+		return report;
+	}
+	*/
 }

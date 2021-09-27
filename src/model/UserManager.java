@@ -12,8 +12,6 @@ public class UserManager {
 
 	public UserManager() {
 		users = new ArrayList <User>();
-		User admin = new User("000","1","000","27-03-2002");
-		users.add(admin);
 	}
 
 	public List<User> getUsers() {
@@ -100,7 +98,28 @@ public class UserManager {
 		}
 	}
 	
-			
+		
+	public int findUser( String userID )
+	{
+		int index = 0;
+		boolean found = false;
+		
+		for( int i = 0; i < users.size() && !found; i++  )
+		{
+			if( userID.equalsIgnoreCase( users.get(i).getId() ) )
+			{
+				index = i;
+				found = true;
+			}
+			else
+			{
+				index = -1;
+			}
+		}
+		
+		return index;
+	}
+	
 	public void sortById() 
 	{
 		int j;

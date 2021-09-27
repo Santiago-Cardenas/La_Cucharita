@@ -13,21 +13,7 @@ public class InventoryManager {
 	public InventoryManager()
 	{
 		ingredients = new ArrayList<Ingredient>();
-		ingredientsForMenus = new ArrayList<Ingredient>();
-		Ingredient newIngredient= new Ingredient("Papa",2,"Units");
-		ingredients.add(newIngredient);
 	}
-	
-	
-	public ArrayList<Ingredient> getIngredientsForMenus() {
-		return ingredientsForMenus;
-	}
-
-
-	public void setIngredientsForMenus(ArrayList<Ingredient> ingredientsForMenus) {
-		this.ingredientsForMenus = ingredientsForMenus;
-	}
-
 
 	public ArrayList<Ingredient> getIngredients()
 	{

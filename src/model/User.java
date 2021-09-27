@@ -4,6 +4,8 @@ public class User {
 	
 	
 	private String username,password,birthDay,id;
+	private int pedidosEntregados;
+	private double dineroTotalDeCombosVendidos;
 	
 	
 	
@@ -14,6 +16,7 @@ public class User {
 		this.id = id;
 		this.birthDay = birthDay;
 	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -41,6 +44,22 @@ public class User {
 	
 	public int compareByUserID(User otherUser) {
 		return id.compareTo(otherUser.getId());
+	}
+
+	public int getPedidosEntregados() {
+		return pedidosEntregados;
+	}
+
+	public void setPedidosEntregados(int pedidosEntregados) {
+		this.pedidosEntregados = pedidosEntregados;
+	}
+
+	public double getDineroTotalDeCombosVendidos() {
+		return dineroTotalDeCombosVendidos;
+	}
+
+	public void setDineroTotalDeCombosVendidos(double dineroTotalDeCombosVendidos) {
+		this.dineroTotalDeCombosVendidos = dineroTotalDeCombosVendidos;
 	}
 	
 }
