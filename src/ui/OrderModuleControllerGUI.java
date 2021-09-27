@@ -77,7 +77,7 @@ public class OrderModuleControllerGUI {
 
 	private ArrayList<Menu> newOrderToPreview;
 
-	private OrderManager orderManager;
+	public OrderManager orderManager;
 
 	private CucharitaGUI cucharitaGUI;
 
@@ -221,7 +221,7 @@ public class OrderModuleControllerGUI {
 	}
 
 	@FXML
-	void addOrderToList(ActionEvent event) {
+	void addOrderToList(ActionEvent event) throws IOException {
 		boolean okToCreate=checkIfServingIsPosible();
 		String menuNames="";
 		int menuPos=0;
@@ -240,6 +240,7 @@ public class OrderModuleControllerGUI {
 				cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).setTotalMoneyPaid(cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).getTotalMoneyPaid()+moneyForMenusRequested);
 			}
 			initializeTableView();
+			cucharitaGUI.exportOrdersData();
 			newOrderToPreview.clear();
 			initializeOrderPreviewTableView();
 			initializeOrderCodesComboBox();
@@ -324,7 +325,7 @@ public class OrderModuleControllerGUI {
 	}
 
 	@FXML
-	void changeStatusToDelivered(ActionEvent event) {
+	void changeStatusToDelivered(ActionEvent event) throws IOException {
 		double precioDePedido=0;
 		if(cmbOrderCode.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -353,7 +354,7 @@ public class OrderModuleControllerGUI {
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setPedidosEntregados(cantidadDePedidosEntregados+1);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioDePedido);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getOrderDates().add(facturationDay.toString());
-					
+					cucharitaGUI.exportOrdersData();
 				}
 			}
 			initializeTableView();
@@ -362,7 +363,7 @@ public class OrderModuleControllerGUI {
 	}
 
 	@FXML
-	void changeStatusToInProcess(ActionEvent event) {
+	void changeStatusToInProcess(ActionEvent event) throws IOException {
 		if(cmbOrderCode.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
@@ -376,6 +377,7 @@ public class OrderModuleControllerGUI {
 			for(int i=0;i<orderManager.getOrder().size();i++) {
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
 					orderManager.getOrder().get(i).setOrderState(OrderState.ON_GOING);
+					cucharitaGUI.exportOrdersData();
 				}
 			}
 			initializeTableView();
@@ -384,7 +386,7 @@ public class OrderModuleControllerGUI {
 	}
 
 	@FXML
-	void changeStatusToPending(ActionEvent event) {
+	void changeStatusToPending(ActionEvent event) throws IOException {
 		if(cmbOrderCode.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
@@ -398,6 +400,7 @@ public class OrderModuleControllerGUI {
 			for(int i=0;i<orderManager.getOrder().size();i++) {
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
 					orderManager.getOrder().get(i).setOrderState(OrderState.PENDING);
+					cucharitaGUI.exportOrdersData();
 				}
 			}
 			initializeTableView();

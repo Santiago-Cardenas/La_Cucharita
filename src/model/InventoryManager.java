@@ -24,11 +24,6 @@ public class InventoryManager {
 		boolean alreadyExists= ingredientAlreadyExists(newIngredient);
 		if(alreadyExists==false) {
 			ingredients.add(newIngredient);
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Information Dialog");
-			alert.setHeaderText(null);
-			alert.setContentText("The ingredient has been stored!");
-			alert.showAndWait();
 		}
 		else {
 			Alert alert = new Alert(AlertType.INFORMATION);

@@ -17,9 +17,9 @@
 
 <Pane fx:id="orderModulePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="680.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="501.0" fitWidth="747.0" layoutX="-4.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="621.0" fitWidth="942.0" layoutX="-4.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../media/ordersModuleBackGround.jpg" />
+            <Image url="@../../media/BLOG_keep-restaurant-staff-happy-motivated-5-tips.jpg" />
          </image>
       </ImageView>
       <TableView fx:id="tvMenuOrder" layoutX="29.0" layoutY="86.0" prefHeight="168.0" prefWidth="203.0" style="-fx-background-color: lightgray;">

@@ -242,13 +242,14 @@ public class MenuModuleControllerGUI {
 	}
 
 	@FXML
-	public void createNewDishToMenu(ActionEvent event) {
+	public void createNewDishToMenu(ActionEvent event) throws IOException {
 		if(dishIngredientsReadyToCreate==true && dishNameReadyToCreate==true) {
 			String dishName= txtNewDishName.getText();
 			double dishPrice= Double.parseDouble(txtNewDishPrice.getText());
 
 			menuManager.createMenu(dishName,dishPrice,newIngredientsToPreview);
 			initializeTableView();
+			cucharitaGUI.exportMenusData();
 			newIngredientsToPreview.clear();
 			initializeIngredientsTableView();
 

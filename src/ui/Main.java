@@ -4,9 +4,6 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -30,6 +27,18 @@ public class Main extends Application{
 		
     	try {
 			cucharitagui.importIngredientsData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			cucharitagui.importMenuData();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			cucharitagui.importOrderData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
