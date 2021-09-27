@@ -31,6 +31,8 @@ public class MenuManager{
 		ArrayList<Ingredient> ingredientToStore = (ArrayList<Ingredient>)ingredientsNames.clone();
 		if(sameName==false) {
 			Menu newMenu = new Menu(dishName,dishPrice,ingredientToStore);
+			newMenu.setTotalQTRequested(0);
+			newMenu.setTotalMoneyPaid(0);
 			addToMenu(newMenu);
 			
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -69,5 +71,26 @@ public class MenuManager{
 		}
 		
 		return sameName;
+	}
+	
+	public int findMenu( String menuName )
+	{
+		int index = 0;
+		boolean found = false;
+		
+		for( int i = 0; i < menu.size() && !found; i++  )
+		{
+			if( menuName.equalsIgnoreCase( menu.get(i).getMenuName() ) )
+			{
+				index = i;
+				found = true;
+			}
+			else
+			{
+				index = -1;
+			}
+		}
+		
+		return index;
 	}
 }

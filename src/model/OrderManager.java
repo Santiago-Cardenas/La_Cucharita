@@ -28,11 +28,9 @@ public List<Order> order;
 	
 	public void createOrder(ArrayList<Menu> menusRequested,String facturationDate,boolean okToCreate) {
 		boolean okToCreateOrder=okToCreate;
-		
 		if(okToCreateOrder==true) {
 			Order newOrder = new Order(menusRequested,OrderState.PENDING,facturationDate);
 			addToOrders(newOrder);
-			System.out.println(newOrder.getOrderState().getValue());
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);

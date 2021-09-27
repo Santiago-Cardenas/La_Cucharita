@@ -7,6 +7,9 @@ public class Menu{
 	private String menuName;
 	private double menuPrice;
 	private int menuQTRequested;
+	private int totalQTRequested;
+	private double totalMoneyPaid;
+	
 	public ArrayList<Ingredient> ingredientsUsed= new ArrayList<Ingredient>();;
 	public Menu(String menuName, double menuPrice, ArrayList<Ingredient> ingredientsUsed) {
 		this.menuName = menuName;
@@ -50,5 +53,23 @@ public class Menu{
 	public void setMenuQTRequested(int menuQTRequested) {
 		this.menuQTRequested = menuQTRequested;
 	}
+
+	public int getTotalQTRequested() {
+		return totalQTRequested;
+	}
+
+	public void setTotalQTRequested(int totalQTRequested) {
+		this.totalQTRequested = totalQTRequested;
+	}
+
+	public double getTotalMoneyPaid() {
+		return totalMoneyPaid;
+	}
+
+	public void setTotalMoneyPaid(double totalMoneyPaid) {
+		this.totalMoneyPaid = totalMoneyPaid;
+	}
+	
+	
 	
 }

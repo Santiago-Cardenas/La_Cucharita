@@ -4,51 +4,127 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="orderModulePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="orderModulePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="680.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="tvMenuOrder" layoutX="56.0" layoutY="86.0" prefHeight="168.0" prefWidth="203.0" style="-fx-background-color: lightgray;">
+      <ImageView fitHeight="501.0" fitWidth="747.0" layoutX="-4.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../media/ordersModuleBackGround.jpg" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tvMenuOrder" layoutX="29.0" layoutY="86.0" prefHeight="168.0" prefWidth="203.0" style="-fx-background-color: lightgray;">
         <columns>
           <TableColumn fx:id="tcDishNameOrder" prefWidth="99.0" text="Menu" />
             <TableColumn fx:id="tcDishQTOrder" prefWidth="104.0" text="QT" />
         </columns>
       </TableView>
-      <Label layoutX="289.0" layoutY="24.0" text="Orders Module" />
-      <Label layoutX="48.0" layoutY="307.0" text="Dish: " />
-      <Label layoutX="48.0" layoutY="337.0" text="Amount:" />
-      <TextField fx:id="txtDishAmount" layoutX="116.0" layoutY="333.0" prefHeight="25.0" prefWidth="28.0" />
+      <TextField fx:id="txtDishAmount" layoutX="94.0" layoutY="336.0" prefHeight="25.0" prefWidth="28.0" />
       <TableView fx:id="tvOrders" layoutX="300.0" layoutY="86.0" prefHeight="245.0" prefWidth="354.0" style="-fx-background-color: lightgray;">
         <columns>
           <TableColumn fx:id="tcOrderInfo" prefWidth="236.0" text="Orders " />
             <TableColumn fx:id="tcOrderStatus" prefWidth="117.0" text="Status" />
         </columns>
       </TableView>
-      <Label layoutX="111.0" layoutY="51.0" text="ORDER PREVIEW" />
-      <Button layoutX="330.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToPending" prefHeight="17.0" prefWidth="80.0" text="Pending" />
-      <Button layoutX="425.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToInProcess" prefHeight="17.0" prefWidth="80.0" text="On going" />
-      <Button layoutX="520.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToDelivered" prefHeight="17.0" prefWidth="80.0" text="Delivered" />
-      <Label layoutX="410.0" layoutY="346.0" text="Change Order Status" />
-      <Button layoutX="104.0" layoutY="419.0" mnemonicParsing="false" onAction="#addOrderToList" prefHeight="17.0" prefWidth="80.0" text="Take Order" />
-      <ComboBox fx:id="cmbDishName" layoutX="116.0" layoutY="303.0" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: lightgray;" />
-      <Button layoutX="170.0" layoutY="333.0" mnemonicParsing="false" onAction="#addDishToOrder" text="Save" />
+      <Button layoutX="330.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToPending" prefHeight="17.0" prefWidth="80.0" style="-fx-background-color: LIGHTGRAY;" text="PENDING" textFill="#ff5e00">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="425.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToInProcess" prefHeight="17.0" prefWidth="80.0" style="-fx-background-color: LIGHTGRAY;" text="ON GOING" textFill="#ff5e00">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="520.0" layoutY="419.0" mnemonicParsing="false" onAction="#changeStatusToDelivered" prefHeight="17.0" prefWidth="80.0" style="-fx-background-color: LIGHTGRAY;" text="DELIVERED" textFill="#ff5e00">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="82.0" layoutY="422.0" mnemonicParsing="false" onAction="#addOrderToList" prefHeight="25.0" prefWidth="95.0" style="-fx-background-color: LIGHTGRAY;" text="TAKE ORDER" textFill="#ff6600">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <ComboBox fx:id="cmbDishName" layoutX="94.0" layoutY="306.0" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: lightgray;" />
+      <Button layoutX="148.0" layoutY="336.0" mnemonicParsing="false" onAction="#addDishToOrder" prefHeight="27.0" prefWidth="48.0" style="-fx-background-color: lightgray;" text="SAVE" textFill="#ff5100">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
       <Button layoutX="538.0" layoutY="24.0" mnemonicParsing="false" onAction="#goBackToModules" prefHeight="35.0" prefWidth="102.0" style="-fx-background-color: lightgray;" text="GO BACK" textFill="#ff5f0a">
          <font>
             <Font name="Microsoft JhengHei UI Bold" size="12.0" />
          </font>
       </Button>
-      <DatePicker fx:id="facturationDate" layoutX="117.0" layoutY="376.0" />
-      <Label layoutX="44.0" layoutY="371.0" prefHeight="35.0" prefWidth="67.0" text="Facturation date" wrapText="true" />
-      <Label layoutX="118.0" layoutY="266.0" prefHeight="27.0" prefWidth="67.0" text="ORDER">
+      <DatePicker fx:id="facturationDate" layoutX="95.0" layoutY="379.0" prefHeight="25.0" prefWidth="147.0" />
+      <ComboBox fx:id="cmbOrderCode" layoutX="410.0" layoutY="372.0" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: lightgray;" />
+      <Label layoutX="257.0" layoutY="14.0" text="Orders Module" textFill="#ff7b00">
          <font>
-            <Font size="18.0" />
+            <Font name="Arial Black" size="21.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cmbOrderCode" layoutX="410.0" layoutY="372.0" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: lightgray;" />
-      <Label layoutX="339.0" layoutY="376.0" text="Order code" />
+      <Label layoutX="30.0" layoutY="44.0" text="Orders Preview">
+         <font>
+            <Font name="Microsoft JhengHei UI Bold" size="20.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.1476190476190476" radius="0.5">
+               <stops>
+                  <Stop color="#aba9a9" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+      <Separator layoutX="30.0" layoutY="71.0" prefHeight="3.0" prefWidth="200.0" />
+      <Label layoutX="30.0" layoutY="263.0" text="Orders">
+         <font>
+            <Font name="Microsoft JhengHei UI Bold" size="20.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.5" centerY="0.1476190476190476" radius="0.5">
+               <stops>
+                  <Stop color="#aba9a9" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+      <Separator layoutX="30.0" layoutY="290.0" prefHeight="3.0" prefWidth="200.0" />
+      <Label alignment="CENTER" layoutX="30.0" layoutY="306.0" prefHeight="25.0" prefWidth="74.0" text="Dish:" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="19.0" layoutY="334.0" prefHeight="25.0" prefWidth="74.0" text="Amount:" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="-4.0" layoutY="372.0" prefHeight="25.0" prefWidth="102.0" text="Facturation" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="16.0" layoutY="385.0" prefHeight="25.0" prefWidth="102.0" text="date:" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="424.0" layoutY="347.0" prefHeight="25.0" prefWidth="147.0" text="Change Orders Status" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="287.0" layoutY="373.0" prefHeight="25.0" prefWidth="147.0" text="OrderCode:" textFill="WHITE">
+         <font>
+            <Font name="Microsoft YaHei UI Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

@@ -165,7 +165,9 @@ public class StaffModuleControllerGUI {
         	String password = pFUserPassword.getText();
         	String id = txtUserId.getText();
         	
-        	User newUser = new User(id,username, password, bday.toString()); 
+        	User newUser = new User(id,username, password, bday.toString());
+        	newUser.setPedidosEntregados(-1);
+        	newUser.setDineroTotalDeCombosVendidos(-1);
         	cucharitaGUI.userManager.addNewUser(newUser);
         	cucharitaGUI.exportUsersData();
         	Alert alert = new Alert(AlertType.INFORMATION);

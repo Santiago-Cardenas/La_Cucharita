@@ -164,10 +164,7 @@ public class OrderModuleControllerGUI {
 				int dishQT= Integer.parseInt(txtDishAmount.getText());
 				if(checkIfDishAlreadyExists(dishName,dishQT)==false) {
 					for(int i=0;i<cucharitaGUI.menuModule.menuManager.getMenu().size();i++) {
-						System.out.println(cucharitaGUI.menuModule.menuManager.getMenu().get(i));
-						System.out.println(cucharitaGUI.menuModule.menuManager.getMenu().get(i).getMenuName());
 						if(cucharitaGUI.menuModule.menuManager.getMenu().get(i).getMenuName().equals(dishName)){
-							System.out.println("Entro al for de crear orden");
 							cucharitaGUI.menuModule.menuManager.getMenu().get(i).setMenuQTRequested(dishQT);
 							newOrderToPreview.add(cucharitaGUI.menuModule.menuManager.getMenu().get(i));
 						}
@@ -226,10 +223,22 @@ public class OrderModuleControllerGUI {
 	@FXML
 	void addOrderToList(ActionEvent event) {
 		boolean okToCreate=checkIfServingIsPosible();
+		String menuNames="";
+		int menuPos=0;
+		int qtMenuRequested=0;
+		double moneyForMenusRequested=0;
 		if(orderReadyToCreate==true) {
 			LocalDate facturationDay = facturationDate.getValue();
 
 			orderManager.createOrder(newOrderToPreview,facturationDay.toString(),okToCreate);
+			for(int i=0; i<newOrderToPreview.size();i++) {
+				menuNames=newOrderToPreview.get(i).getMenuName();
+				menuPos=cucharitaGUI.menuModule.menuManager.findMenu(menuNames);
+				qtMenuRequested=newOrderToPreview.get(i).getMenuQTRequested();
+				moneyForMenusRequested=qtMenuRequested * newOrderToPreview.get(i).getMenuPrice();
+				cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).setTotalQTRequested(cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).getTotalQTRequested()+qtMenuRequested);
+				cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).setTotalMoneyPaid(cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).getTotalMoneyPaid()+moneyForMenusRequested);
+			}
 			initializeTableView();
 			newOrderToPreview.clear();
 			initializeOrderPreviewTableView();
@@ -258,28 +267,15 @@ public class OrderModuleControllerGUI {
 		double ingredientsLeft=0;
 		int menuRequestedQT=0;
 		for (int i =0; i<newOrderToPreview.size();i++) {
-			System.out.println("Entro al for de menu");
-			System.out.println(newOrderToPreview.get(i).getIngredientsUsed().size());
 			menuRequestedQT=newOrderToPreview.get(i).getMenuQTRequested();
 			msg+="For the " + newOrderToPreview.get(i).getMenuName() + " dish\n";
 			for(int p=0; p<cucharitaGUI.inventoryModule.inventoryManager.getIngredients().size();p++) {
-				System.out.println("Entro al for de array ingrediente\n"+ "ingrediente del array de ingredientes");
-				System.out.println(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName());
-				System.out.println(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientQT());
 				for(int j=0;j<newOrderToPreview.get(i).getIngredientsUsed().size();j++) {
-					System.out.println("Entro al for de cada ingrediente\n"+ "ingrediente del array de ingredientes del menu");
-					System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName());
-					System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT());
 					if(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName().equals(cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(p).getIngredientName())) {
-						System.out.println("Entro al if de ingrediente");
-						System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName());
-						System.out.println(newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT());
 						currentIngredientsQT=cucharitaGUI.inventoryModule.inventoryManager.getIngredients().get(j).getIngredientQT();
 						requestedIngredientsQT= menuRequestedQT * newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientQT();
 						ingredientsLeft=currentIngredientsQT-requestedIngredientsQT;
 						if(ingredientsLeft<0) {
-							System.out.println("Entro al if de no hay suficientes ingredientes");
-							System.out.println(ingredientsLeft);
 							msg+="There is not enough: \n" + newOrderToPreview.get(i).getIngredientsUsed().get(j).getIngredientName() + "\n";
 							canServe=false;
 						}
@@ -349,6 +345,10 @@ public class OrderModuleControllerGUI {
 					int userLoggedInPos = cucharitaGUI.userManager.findUser(cucharitaGUI.getUserLoggedIn());
 					int cantidadDePedidosEntregados =cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getPedidosEntregados();
 					double cantidadDeDineroRecaudado =cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getDineroTotalDeCombosVendidos();
+					if(cantidadDePedidosEntregados==-1 && cantidadDeDineroRecaudado==-1) {
+						cantidadDePedidosEntregados=0;
+						cantidadDeDineroRecaudado=0;
+					}
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setPedidosEntregados(cantidadDePedidosEntregados+1);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioDePedido);
 					
