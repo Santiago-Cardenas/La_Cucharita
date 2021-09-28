@@ -75,7 +75,7 @@ public class CucharitaGUI {
 	private Pane taskManagerPane;
 
 
-	public CucharitaGUI() 
+	public CucharitaGUI()
 	{
 		staffModule = new StaffModuleControllerGUI(this);  
 		inventoryModule = new InventoryModuleControllerGUI(this);
@@ -212,6 +212,7 @@ public class CucharitaGUI {
 		BufferedReader br = new BufferedReader(new FileReader (USERS_DATA_CSV_PATH));
 		String line = br.readLine();
 		int count=0;
+		ArrayList<String> orderDates= new ArrayList<String>();
 		while (line != null) {
 			count++;
 			String[] parts = line.split("\\|");
@@ -219,7 +220,18 @@ public class CucharitaGUI {
 				User newUser = new User(parts[0], parts[1], parts[2], parts[3]);
 				newUser.setPedidosEntregados(Integer.parseInt(parts[4]));
 				newUser.setDineroTotalDeCombosVendidos(Double.parseDouble(parts[5]));
-				userManager.addNewUser(newUser);
+				if(parts.length>5) {
+					for(int i=0;i<parts.length;i++) {
+						if(i>5) {
+							orderDates.add(parts[i]);
+						}
+					}
+					userManager.addNewUser(newUser);
+					newUser.setOrderDates(orderDates);
+				}
+				else {
+					userManager.addNewUser(newUser);
+				}
 			}
 			line = br.readLine();
 		}
@@ -312,10 +324,14 @@ public class CucharitaGUI {
 
 	public void exportUsersData() throws IOException {
 		FileWriter fw = new FileWriter(USERS_DATA_CSV_PATH,false);
-		fw.write("ID|USERNAME|PASSWORD|BIRTHDAY|ORDERS_TAKEN|MONEY_COLLECTED\n");
+		fw.write("ID|USERNAME|PASSWORD|BIRTHDAY|ORDERS_TAKEN|MONEY_COLLECTED|ORDER_DATES\n");
 		for (int i = 0; i < userManager.getUsers().size(); i++) {
 			User myUser = userManager.getUsers().get(i);
-			fw.write(myUser.getId() + "|" + myUser.getUsername() + "|" + myUser.getPassword() + "|" + myUser.getBirthDay() +  "|" + myUser.getPedidosEntregados() + "|" + myUser.getDineroTotalDeCombosVendidos() +"\n");
+			fw.write(myUser.getId() + "|" + myUser.getUsername() + "|" + myUser.getPassword() + "|" + myUser.getBirthDay() +  "|" + myUser.getPedidosEntregados() + "|" + myUser.getDineroTotalDeCombosVendidos());
+			for(int j=0;j<userManager.getUsers().get(i).getOrderDates().size();j++) {
+				fw.write("|" + myUser.getOrderDates().get(j));
+			}
+			fw.write("\n");
 		}
 		fw.close();
 	}
@@ -358,6 +374,7 @@ public class CucharitaGUI {
 		}
 		fw.close();
 	}
+	
 
 	public String getUserLoggedIn() {
 		return userLoggedIn;
@@ -367,46 +384,129 @@ public class CucharitaGUI {
 		this.userLoggedIn = userLoggedIn;
 	}
 
-	public String exportReportA() {
+	public String exportReportA(String initialDay,String finalDay) {
+		int userLoggedInPos =userManager.findUser(getUserLoggedIn());
+		String orderDates = "";
+		String currentOrderDates="";
 		String report="===========================\n"+
-					  "		REPORT A\n"+
-				      "===========================\n";
-		int pos=1;
+				      "		REPORT A\n"+
+			          "===========================\n";
+		
+		String[] currentDate = null;
+		String[] initialDate = null;
+		String[] finalDate = null;
+		String[] currentDays = null;
+		int orderDateSize=userManager.getUsers().get(userLoggedInPos).getOrderDates().size();
+		for(int i=0; i<orderDateSize;i++) {
+			orderDates += userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i)+"++";
+		}
 
-		for(int i=0; i<userManager.getUsers().size();i++) {
-			if(userManager.getUsers().get(i).getPedidosEntregados()>0) {
-				report+= pos +". ID " + userManager.getUsers().get(i).getId() + " has delivered a total of " +  userManager.getUsers().get(i).getPedidosEntregados() + " orders and collected a total of " + userManager.getUsers().get(i).getDineroTotalDeCombosVendidos() + "$\n";
-				pos++;
+		if(orderDateSize>0) {
+			currentDate = orderDates.split("\\+\\+");
+		}
+		
+		for(int i=0; i<currentDate.length;i++) {
+			currentOrderDates += currentDate[i];
+		}
+		
+		if(orderDateSize>0) {
+			currentDays = currentOrderDates.split("\\-");
+		}
+		
+		initialDate=initialDay.split("\\-");
+		int initialYearGiven = Integer.valueOf(initialDate[0]);
+		int initialMonthGiven = Integer.valueOf(initialDate[1]);
+		int initialDayGiven = Integer.valueOf(initialDate[2]);
+		finalDate=finalDay.split("\\-");
+		int finalYearGiven = Integer.valueOf(finalDate[0]);
+		int finalMonthGiven = Integer.valueOf(finalDate[1]);
+		int finalDayGiven = Integer.valueOf(finalDate[2]);
+		
+		for(int j=0; j<orderDateSize;j++) {
+			System.out.println("Entro al for de order Date");
+			System.out.println(currentDays[j]);
+			System.out.println(currentDays[j+1]);
+			System.out.println(currentDays[j+2]);
+			int facturationYear = Integer.valueOf(currentDays[j]);
+			int facturationMonth = Integer.valueOf(currentDays[j+1]);
+			int facturationDay = Integer.valueOf(currentDays[j+2]);
+			if((facturationYear>initialYearGiven && facturationYear<finalYearGiven) || facturationYear==initialYearGiven) {
+				if((facturationMonth>initialMonthGiven && facturationMonth<finalMonthGiven)|| facturationMonth==initialMonthGiven) {
+					if((facturationDay>initialDayGiven && facturationDay<finalDayGiven) || facturationDay==initialDayGiven) {
+						int pos=1;
+
+						for(int i=0; i<userManager.getUsers().size();i++) {
+							if(userManager.getUsers().get(i).getPedidosEntregados()>0) {
+								report+= pos +". ID " + userManager.getUsers().get(i).getId() + " has delivered a total of " +  userManager.getUsers().get(i).getPedidosEntregados() + " orders and collected a total of " + userManager.getUsers().get(i).getDineroTotalDeCombosVendidos() + "$\n";
+								pos++;
+							}
+						}
+					}
+				}
 			}
 		}
 		return report;
 	}
 
-	public void generateReportA() throws IOException{
+	public void generateReportA(String initialDay,String finalDay) throws IOException{
 		File file = new File (REPORT_A_FILE_NAME);
 		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(exportReportA().getBytes());
+		fos.write(exportReportA(initialDay,finalDay).getBytes());
 		fos.close();
 	}
 	
-	public String exportReportB() {
+	public String exportReportB(String initialDay,String finalDay) {
+		int userLoggedInPos =userManager.findUser(getUserLoggedIn());
+		String orderDates = "";
 		String report="===========================\n"+
-					  "		REPORT B\n"+
-				      "===========================\n";
-		int pos=1;
-		System.out.println(menuModule.menuManager.getMenu().size());
-		for(int i=0; i<menuModule.menuManager.getMenu().size();i++) {
-				report+= pos +". Dish Name: " + menuModule.menuManager.getMenu().get(i).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(i).getTotalQTRequested() + " times and the total of money colleted from this dish is: " + menuModule.menuManager.getMenu().get(i).getTotalMoneyPaid() + "$\n";
-				pos++;
+				"		REPORT B\n"+
+				"===========================\n";
 
+		String[] currentDate = null;
+		String[] initialDate = null;
+		String[] finalDate = null;
+		int orderDateSize=userManager.getUsers().get(userLoggedInPos).getOrderDates().size();
+		for(int i=0; i<orderDateSize;i++) {
+			orderDates += userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i)+"++";
+		}
+
+		if(orderDateSize>0) {
+			currentDate = orderDates.split("\\+\\+");
+		}
+		initialDate=initialDay.split("\\-");
+		int initialYearGiven = Integer.valueOf(initialDate[0]);
+		int initialMonthGiven = Integer.valueOf(initialDate[1]);
+		int initialDayGiven = Integer.valueOf(initialDate[2]);
+		finalDate=finalDay.split("\\-");
+		int finalYearGiven = Integer.valueOf(finalDate[0]);
+		int finalMonthGiven = Integer.valueOf(finalDate[1]);
+		int finalDayGiven = Integer.valueOf(finalDate[2]);
+
+		for(int j=0; j<orderDateSize;j++) {
+			int facturationYear = Integer.valueOf(currentDate[j]);
+			int facturationMonth = Integer.valueOf(currentDate[j+1]);
+			int facturationDay = Integer.valueOf(currentDate[j+2]);
+			if(facturationYear>initialYearGiven && facturationYear<finalYearGiven) {
+				if(facturationMonth>initialMonthGiven && facturationMonth<finalMonthGiven) {
+					if(facturationDay>initialDayGiven && facturationDay<finalDayGiven) {
+						int pos=1;
+						System.out.println(menuModule.menuManager.getMenu().size());
+						for(int i=0; i<menuModule.menuManager.getMenu().size();i++) {
+							report+= pos +". Dish Name: " + menuModule.menuManager.getMenu().get(i).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(i).getTotalQTRequested() + " times and the total of money colleted from this dish is: " + menuModule.menuManager.getMenu().get(i).getTotalMoneyPaid() + "$\n";
+							pos++;
+
+						}
+					}
+				}
+			}
 		}
 		return report;
 	}
 
-	public void generateReportB() throws IOException{
+	public void generateReportB(String initialDay,String finalDay) throws IOException{
 		File file = new File (REPORT_B_FILE_NAME);
 		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(exportReportB().getBytes());
+		fos.write(exportReportB(initialDay,finalDay).getBytes());
 		fos.close();
 	}
 

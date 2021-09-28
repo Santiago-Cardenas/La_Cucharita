@@ -29,7 +29,9 @@ public List<Order> order;
 	public void createOrder(ArrayList<Menu> menusRequested,String facturationDate,boolean okToCreate) {
 		boolean okToCreateOrder=okToCreate;
 		if(okToCreateOrder==true) {
-			Order newOrder = new Order(menusRequested,OrderState.PENDING,facturationDate);
+			@SuppressWarnings("unchecked")
+			ArrayList<Menu> menuToStore = (ArrayList<Menu>)menusRequested.clone();
+			Order newOrder = new Order(menuToStore,OrderState.PENDING,facturationDate);
 			addToOrders(newOrder);
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");

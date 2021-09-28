@@ -37,12 +37,14 @@ public class Main extends Application{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	/*
     	try {
 			cucharitagui.importOrderData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
     }
     
 	public static void main(String [] args)

@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,12 +46,16 @@ public class ReportsModuleControllerGUI {
 
 		@FXML
 	    void generateReportA(ActionEvent event) throws IOException {
-			cucharitaGUI.generateReportA();
+			LocalDate initialDay = dpInitialDate.getValue();
+			LocalDate finalDay = dpFinalDate.getValue();
+			cucharitaGUI.generateReportA(initialDay.toString(),finalDay.toString());
 	    }
 
 	    @FXML
 	    void generateReportB(ActionEvent event) throws IOException {
-	    	cucharitaGUI.generateReportB();
+	    	LocalDate initialDay = dpInitialDate.getValue();
+			LocalDate finalDay = dpFinalDate.getValue();
+	    	cucharitaGUI.generateReportB(initialDay.toString(),finalDay.toString());
 	    }
 	    
 	    @FXML

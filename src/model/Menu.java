@@ -15,11 +15,7 @@ public class Menu{
 		this.menuName = menuName;
 		this.menuPrice = menuPrice;
 		this.ingredientsUsed = ingredientsUsed;
-	}
-	
-	public Menu(String menuName, int menuQTRequested) {
-		this.menuName = menuName;
-		this.menuQTRequested=menuQTRequested;
+		setMenuQTRequested(0);
 	}
 	
 	public String getMenuName() {

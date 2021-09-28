@@ -23,12 +23,12 @@
             <Font name="Arial Black" size="24.0" />
          </font>
       </Label>
-      <Button layoutX="157.0" layoutY="159.0" mnemonicParsing="false" onAction="#generateReportA" prefHeight="65.0" prefWidth="122.0" style="-fx-background-color: lightgray;" text="REPORT A " textFill="#ff6200">
+      <Button layoutX="157.0" layoutY="264.0" mnemonicParsing="false" onAction="#generateReportA" prefHeight="65.0" prefWidth="122.0" style="-fx-background-color: lightgray;" text="REPORT A " textFill="#ff6200">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="58.0" layoutY="108.0" text="Pick a report option">
+      <Label layoutX="58.0" layoutY="213.0" text="Pick a report option">
          <font>
             <Font name="Microsoft JhengHei UI Bold" size="20.0" />
          </font>
@@ -41,12 +41,12 @@
             </RadialGradient>
          </textFill>
       </Label>
-      <Button layoutX="390.0" layoutY="159.0" mnemonicParsing="false" onAction="#generateReportB" prefHeight="65.0" prefWidth="122.0" style="-fx-background-color: lightgray;" text="REPORT B " textFill="#ff6200">
+      <Button layoutX="390.0" layoutY="264.0" mnemonicParsing="false" onAction="#generateReportB" prefHeight="65.0" prefWidth="122.0" style="-fx-background-color: lightgray;" text="REPORT B " textFill="#ff6200">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="58.0" layoutY="89.0" text="Pick the date" visible="false">
+      <Label layoutX="58.0" layoutY="89.0" text="Pick the date">
          <font>
             <Font name="Microsoft JhengHei UI Bold" size="20.0" />
          </font>
@@ -59,16 +59,16 @@
             </RadialGradient>
          </textFill>
       </Label>
-      <Separator layoutX="57.0" layoutY="142.0" prefHeight="3.0" prefWidth="200.0" />
-      <Separator layoutX="53.0" layoutY="116.0" prefHeight="3.0" prefWidth="200.0" visible="false" />
-      <DatePicker fx:id="dpInitialDate" layoutX="111.0" layoutY="146.0" visible="false" />
-      <DatePicker fx:id="dpFinalDate" layoutX="401.0" layoutY="146.0" visible="false" />
-      <Label alignment="CENTER" layoutX="25.0" layoutY="146.0" prefHeight="25.0" prefWidth="86.0" text="Initial Date:" textFill="WHITE" visible="false">
+      <Separator layoutX="57.0" layoutY="247.0" prefHeight="3.0" prefWidth="200.0" />
+      <Separator layoutX="53.0" layoutY="116.0" prefHeight="3.0" prefWidth="200.0" />
+      <DatePicker fx:id="dpInitialDate" layoutX="105.0" layoutY="159.0" />
+      <DatePicker fx:id="dpFinalDate" layoutX="338.0" layoutY="159.0" />
+      <Label alignment="CENTER" layoutX="105.0" layoutY="134.0" prefHeight="25.0" prefWidth="86.0" text="Initial Date:" textFill="WHITE">
          <font>
             <Font name="Microsoft YaHei UI Bold" size="13.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="315.0" layoutY="146.0" prefHeight="25.0" prefWidth="86.0" text="final Date:" textFill="WHITE" visible="false">
+      <Label alignment="CENTER" layoutX="338.0" layoutY="134.0" prefHeight="25.0" prefWidth="86.0" text="final Date:" textFill="WHITE">
          <font>
             <Font name="Microsoft YaHei UI Bold" size="13.0" />
          </font>

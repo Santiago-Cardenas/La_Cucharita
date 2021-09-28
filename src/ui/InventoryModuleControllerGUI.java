@@ -150,7 +150,7 @@ public class InventoryModuleControllerGUI {
     }
 
     @FXML
-    public void decreaseIngredientAmount(ActionEvent event) 
+    public void decreaseIngredientAmount(ActionEvent event) throws IOException 
     {
     	String ingredientName = txtIngredientNameEdit.getText();
     	String amount = txtIngredientAmountEdit.getText();
@@ -158,6 +158,7 @@ public class InventoryModuleControllerGUI {
     	if( ingredientName.toString().length() > 0 && amount.toString().length() > 0 )
     	{
         	inventoryManager.decreaseIngredient(ingredientName, amount);
+        	cucharitaGUI.exportIngredientsData();
          	initializeTableView();
          	tvInventory.refresh();
     	}
@@ -174,7 +175,7 @@ public class InventoryModuleControllerGUI {
     }
 
     @FXML
-    public void increaseIngredientAmount(ActionEvent event) 
+    public void increaseIngredientAmount(ActionEvent event) throws IOException 
     {
 		String ingredientName = txtIngredientNameEdit.getText();
 		String amount =  txtIngredientAmountEdit.getText();
@@ -182,6 +183,7 @@ public class InventoryModuleControllerGUI {
     	if( ingredientName.toString().length() > 0 && amount.toString().length() > 0)
     	{
     		inventoryManager.increaseIngredient(ingredientName, amount);
+    		cucharitaGUI.exportIngredientsData();
     		initializeTableView();
     		tvInventory.refresh();
     	}
@@ -198,11 +200,12 @@ public class InventoryModuleControllerGUI {
     }
     
     @FXML
-    public void deleteIngredient(ActionEvent event) 
+    public void deleteIngredient(ActionEvent event) throws IOException 
     {
     	String ingredientName = txtIngredientNameEdit.getText();
     	
     	inventoryManager.deleteIngredient(ingredientName);
+    	cucharitaGUI.exportIngredientsData();
     	
     	initializeTableView();
     	clearFields();

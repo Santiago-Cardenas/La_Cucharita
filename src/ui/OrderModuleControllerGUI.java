@@ -229,7 +229,7 @@ public class OrderModuleControllerGUI {
 		double moneyForMenusRequested=0;
 		if(orderReadyToCreate==true) {
 			LocalDate facturationDay = facturationDate.getValue();
-
+			System.out.println(newOrderToPreview.size());
 			orderManager.createOrder(newOrderToPreview,facturationDay.toString(),okToCreate);
 			for(int i=0; i<newOrderToPreview.size();i++) {
 				menuNames=newOrderToPreview.get(i).getMenuName();
@@ -239,6 +239,8 @@ public class OrderModuleControllerGUI {
 				cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).setTotalQTRequested(cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).getTotalQTRequested()+qtMenuRequested);
 				cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).setTotalMoneyPaid(cucharitaGUI.menuModule.menuManager.getMenu().get(menuPos).getTotalMoneyPaid()+moneyForMenusRequested);
 			}
+			System.out.println(orderManager.getOrder().get(0).getMenusRequested().size());
+			System.out.println(orderManager.getOrder().get(0).getMenusRequested().get(0).getMenuName());
 			initializeTableView();
 			cucharitaGUI.exportOrdersData();
 			newOrderToPreview.clear();
@@ -327,6 +329,8 @@ public class OrderModuleControllerGUI {
 	@FXML
 	void changeStatusToDelivered(ActionEvent event) throws IOException {
 		double precioDePedido=0;
+		int qtPedida=0;
+		double precioTotal=0;
 		if(cmbOrderCode.getValue().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Warning Dialog");
@@ -340,9 +344,19 @@ public class OrderModuleControllerGUI {
 			for(int i=0;i<orderManager.getOrder().size();i++) {
 				String facturationDay =orderManager.getOrder().get(i).getOrderDate() ;
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
+					System.out.println(orderManager.getOrder().get(i).getMenusRequested().size());
 					for(int j=0;j<orderManager.getOrder().get(i).getMenusRequested().size();j++) {
+						System.out.println(precioDePedido);
+						System.out.println(qtPedida);
+						System.out.println(precioTotal);
 						precioDePedido+=orderManager.getOrder().get(i).getMenusRequested().get(j).getMenuPrice();
+						qtPedida=orderManager.getOrder().get(i).getMenusRequested().get(j).getMenuQTRequested();
+						precioTotal+=qtPedida*precioDePedido;
+						System.out.println(precioDePedido);
+						System.out.println(qtPedida);
+						System.out.println(precioTotal);
 					}
+					System.out.println(precioTotal+ "total total");
 					orderManager.getOrder().get(i).setOrderState(OrderState.DELIVERED);
 					int userLoggedInPos = cucharitaGUI.userManager.findUser(cucharitaGUI.getUserLoggedIn());
 					int cantidadDePedidosEntregados =cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getPedidosEntregados();
@@ -351,9 +365,12 @@ public class OrderModuleControllerGUI {
 						cantidadDePedidosEntregados=0;
 						cantidadDeDineroRecaudado=0;
 					}
+					System.out.println(cantidadDeDineroRecaudado+precioTotal);
+					System.out.println(cantidadDeDineroRecaudado);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setPedidosEntregados(cantidadDePedidosEntregados+1);
-					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioDePedido);
+					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).setDineroTotalDeCombosVendidos(cantidadDeDineroRecaudado+precioTotal);
 					cucharitaGUI.userManager.getUsers().get(userLoggedInPos).getOrderDates().add(facturationDay);
+					cucharitaGUI.exportUsersData();
 					cucharitaGUI.exportOrdersData();
 				}
 			}
@@ -432,4 +449,3 @@ public class OrderModuleControllerGUI {
 
 
 }
-
