@@ -230,7 +230,7 @@ public class OrderModuleControllerGUI {
 		if(orderReadyToCreate==true) {
 			LocalDate facturationDay = facturationDate.getValue();
 			System.out.println(newOrderToPreview.size());
-			orderManager.createOrder(newOrderToPreview,facturationDay.toString(),okToCreate);
+			orderManager.createOrder(newOrderToPreview,facturationDay,okToCreate);
 			for(int i=0; i<newOrderToPreview.size();i++) {
 				menuNames=newOrderToPreview.get(i).getMenuName();
 				menuPos=cucharitaGUI.menuModule.menuManager.findMenu(menuNames);
@@ -342,7 +342,7 @@ public class OrderModuleControllerGUI {
 		else {
 			String code=cmbOrderCode.getValue();
 			for(int i=0;i<orderManager.getOrder().size();i++) {
-				String facturationDay =orderManager.getOrder().get(i).getOrderDate() ;
+				LocalDate facturationDay =orderManager.getOrder().get(i).getOrderDate() ;
 				if(orderManager.getOrder().get(i).getCode().equals(code)){
 					System.out.println(orderManager.getOrder().get(i).getMenusRequested().size());
 					for(int j=0;j<orderManager.getOrder().get(i).getMenusRequested().size();j++) {

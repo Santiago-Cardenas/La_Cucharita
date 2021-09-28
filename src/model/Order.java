@@ -1,15 +1,16 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class Order{
 	private OrderState orderState;
 	private String code;
-	private String orderDate;
+	private LocalDate orderDate;
 	public ArrayList<Menu> menusRequested= new ArrayList<Menu>();
 	
-	public Order(ArrayList<Menu> menusRequested, OrderState orderState, String orderDate) {
+	public Order(ArrayList<Menu> menusRequested, OrderState orderState, LocalDate orderDate) {
 		this.menusRequested=menusRequested;
 		this.orderState=orderState;
 		this.orderDate=orderDate;
@@ -32,11 +33,11 @@ public class Order{
 		this.code = code;
 	}
 
-	public String getOrderDate() {
+	public LocalDate getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(String orderDate) {
+	public void setOrderDate(LocalDate orderDate) {
 		this.orderDate = orderDate;
 	}
 

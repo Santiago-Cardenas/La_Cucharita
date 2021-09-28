@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public List<Order> order;
 		order.add(neworder);
 	}
 	
-	public void createOrder(ArrayList<Menu> menusRequested,String facturationDate,boolean okToCreate) {
+	public void createOrder(ArrayList<Menu> menusRequested,LocalDate facturationDate,boolean okToCreate) {
 		boolean okToCreateOrder=okToCreate;
 		if(okToCreateOrder==true) {
 			@SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class User {
@@ -8,7 +9,7 @@ public class User {
 	private String username,password,birthDay,id;
 	private int pedidosEntregados;
 	private double dineroTotalDeCombosVendidos;
-	public ArrayList <String> orderDates;
+	public ArrayList <LocalDate> orderDates;
 	
 	
 	
@@ -18,7 +19,7 @@ public class User {
 		this.password = password;
 		this.id = id;
 		this.birthDay = birthDay;
-		orderDates= new ArrayList<String>();
+		orderDates= new ArrayList<LocalDate>();
 	}
 	
 	public String getUsername() {
@@ -66,11 +67,11 @@ public class User {
 		this.dineroTotalDeCombosVendidos = dineroTotalDeCombosVendidos;
 	}
 
-	public ArrayList<String> getOrderDates() {
+	public ArrayList<LocalDate> getOrderDates() {
 		return orderDates;
 	}
 
-	public void setOrderDates(ArrayList<String> orderDates) {
+	public void setOrderDates(ArrayList<LocalDate> orderDates) {
 		this.orderDates = orderDates;
 	}
 	

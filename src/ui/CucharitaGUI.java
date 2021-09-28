@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -13,9 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Ingredient;
@@ -212,7 +216,7 @@ public class CucharitaGUI {
 		BufferedReader br = new BufferedReader(new FileReader (USERS_DATA_CSV_PATH));
 		String line = br.readLine();
 		int count=0;
-		ArrayList<String> orderDates= new ArrayList<String>();
+		ArrayList<LocalDate> facturationDates= new ArrayList<LocalDate>();
 		while (line != null) {
 			count++;
 			String[] parts = line.split("\\|");
@@ -223,11 +227,13 @@ public class CucharitaGUI {
 				if(parts.length>5) {
 					for(int i=0;i<parts.length;i++) {
 						if(i>5) {
-							orderDates.add(parts[i]);
+							 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+							LocalDate date = LocalDate.parse(parts[i], formatter);
+							facturationDates.add(date);
 						}
 					}
 					userManager.addNewUser(newUser);
-					newUser.setOrderDates(orderDates);
+					newUser.setOrderDates(facturationDates);
 				}
 				else {
 					userManager.addNewUser(newUser);
@@ -301,18 +307,20 @@ public class CucharitaGUI {
 						}
 					}
 				}
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				LocalDate date = LocalDate.parse(parts[3], formatter);
 				if(parts[1].equalsIgnoreCase("PENDING")) {
-					Order newOrder = new Order(newMenu,OrderState.PENDING,parts[3]);
+					Order newOrder = new Order(newMenu,OrderState.PENDING,date);
 					newOrder.setCode(parts[0]);
 					orderModule.orderManager.addToOrders(newOrder);
 				}
 				else if(parts[1].equalsIgnoreCase("ON_GOING")) {
-					Order newOrder = new Order(newMenu,OrderState.ON_GOING,parts[3]);
+					Order newOrder = new Order(newMenu,OrderState.ON_GOING,date);
 					newOrder.setCode(parts[0]);
 					orderModule.orderManager.addToOrders(newOrder);
 				}
 				else if(parts[1].equalsIgnoreCase("DELIVERED")) {
-					Order newOrder = new Order(newMenu,OrderState.DELIVERED,parts[3]);
+					Order newOrder = new Order(newMenu,OrderState.DELIVERED,date);
 					newOrder.setCode(parts[0]);
 					orderModule.orderManager.addToOrders(newOrder);
 				}
@@ -384,126 +392,63 @@ public class CucharitaGUI {
 		this.userLoggedIn = userLoggedIn;
 	}
 
-	public String exportReportA(String initialDay,String finalDay) {
+	public String exportReportA(LocalDate initialDay,LocalDate finalDay) {
 		int userLoggedInPos =userManager.findUser(getUserLoggedIn());
-		String orderDates = "";
-		String currentOrderDates="";
 		String report="===========================\n"+
-				      "		REPORT A\n"+
-			          "===========================\n";
-		
-		String[] currentDate = null;
-		String[] initialDate = null;
-		String[] finalDate = null;
-		String[] currentDays = null;
-		int orderDateSize=userManager.getUsers().get(userLoggedInPos).getOrderDates().size();
-		for(int i=0; i<orderDateSize;i++) {
-			orderDates += userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i)+"++";
-		}
-
-		if(orderDateSize>0) {
-			currentDate = orderDates.split("\\+\\+");
-		}
-		
-		for(int i=0; i<currentDate.length;i++) {
-			currentOrderDates += currentDate[i];
-		}
-		
-		if(orderDateSize>0) {
-			currentDays = currentOrderDates.split("\\-");
-		}
-		
-		initialDate=initialDay.split("\\-");
-		int initialYearGiven = Integer.valueOf(initialDate[0]);
-		int initialMonthGiven = Integer.valueOf(initialDate[1]);
-		int initialDayGiven = Integer.valueOf(initialDate[2]);
-		finalDate=finalDay.split("\\-");
-		int finalYearGiven = Integer.valueOf(finalDate[0]);
-		int finalMonthGiven = Integer.valueOf(finalDate[1]);
-		int finalDayGiven = Integer.valueOf(finalDate[2]);
-		
-		for(int j=0; j<orderDateSize;j++) {
-			System.out.println("Entro al for de order Date");
-			System.out.println(currentDays[j]);
-			System.out.println(currentDays[j+1]);
-			System.out.println(currentDays[j+2]);
-			int facturationYear = Integer.valueOf(currentDays[j]);
-			int facturationMonth = Integer.valueOf(currentDays[j+1]);
-			int facturationDay = Integer.valueOf(currentDays[j+2]);
-			if((facturationYear>initialYearGiven && facturationYear<finalYearGiven) || facturationYear==initialYearGiven) {
-				if((facturationMonth>initialMonthGiven && facturationMonth<finalMonthGiven)|| facturationMonth==initialMonthGiven) {
-					if((facturationDay>initialDayGiven && facturationDay<finalDayGiven) || facturationDay==initialDayGiven) {
-						int pos=1;
-
-						for(int i=0; i<userManager.getUsers().size();i++) {
-							if(userManager.getUsers().get(i).getPedidosEntregados()>0) {
-								report+= pos +". ID " + userManager.getUsers().get(i).getId() + " has delivered a total of " +  userManager.getUsers().get(i).getPedidosEntregados() + " orders and collected a total of " + userManager.getUsers().get(i).getDineroTotalDeCombosVendidos() + "$\n";
-								pos++;
-							}
-						}
+				"		REPORT A\n"+
+				"===========================\n";
+		LocalDate currentFacturationDate=null;
+		for(int i=0;i<userManager.getUsers().get(userLoggedInPos).getOrderDates().size();i++){
+			currentFacturationDate=userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i);
+			if(initialDay.compareTo(currentFacturationDate) * currentFacturationDate.compareTo(finalDay) >= 0) {
+				int pos=1;
+				for(int j=0; j<userManager.getUsers().size();j++) {
+					if(userManager.getUsers().get(j).getPedidosEntregados()>0) {
+						report+= pos +". ID " + userManager.getUsers().get(j).getId() + " has delivered a total of " +  userManager.getUsers().get(j).getPedidosEntregados() + " orders and collected a total of " + userManager.getUsers().get(j).getDineroTotalDeCombosVendidos() + "$\n";
+						pos++;
 					}
 				}
+			}
+			else {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Warning Dialog");
+				alert.setHeaderText(null);
+				alert.setContentText("Please select valid dates");
+
+				alert.showAndWait();
 			}
 		}
 		return report;
 	}
 
-	public void generateReportA(String initialDay,String finalDay) throws IOException{
+	public void generateReportA(LocalDate initialDay,LocalDate finalDay) throws IOException{
 		File file = new File (REPORT_A_FILE_NAME);
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(exportReportA(initialDay,finalDay).getBytes());
 		fos.close();
 	}
 	
-	public String exportReportB(String initialDay,String finalDay) {
+	public String exportReportB(LocalDate initialDay,LocalDate finalDay) {
 		int userLoggedInPos =userManager.findUser(getUserLoggedIn());
-		String orderDates = "";
 		String report="===========================\n"+
 				"		REPORT B\n"+
 				"===========================\n";
-
-		String[] currentDate = null;
-		String[] initialDate = null;
-		String[] finalDate = null;
-		int orderDateSize=userManager.getUsers().get(userLoggedInPos).getOrderDates().size();
-		for(int i=0; i<orderDateSize;i++) {
-			orderDates += userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i)+"++";
-		}
-
-		if(orderDateSize>0) {
-			currentDate = orderDates.split("\\+\\+");
-		}
-		initialDate=initialDay.split("\\-");
-		int initialYearGiven = Integer.valueOf(initialDate[0]);
-		int initialMonthGiven = Integer.valueOf(initialDate[1]);
-		int initialDayGiven = Integer.valueOf(initialDate[2]);
-		finalDate=finalDay.split("\\-");
-		int finalYearGiven = Integer.valueOf(finalDate[0]);
-		int finalMonthGiven = Integer.valueOf(finalDate[1]);
-		int finalDayGiven = Integer.valueOf(finalDate[2]);
-
-		for(int j=0; j<orderDateSize;j++) {
-			int facturationYear = Integer.valueOf(currentDate[j]);
-			int facturationMonth = Integer.valueOf(currentDate[j+1]);
-			int facturationDay = Integer.valueOf(currentDate[j+2]);
-			if(facturationYear>initialYearGiven && facturationYear<finalYearGiven) {
-				if(facturationMonth>initialMonthGiven && facturationMonth<finalMonthGiven) {
-					if(facturationDay>initialDayGiven && facturationDay<finalDayGiven) {
+		LocalDate currentFacturationDate=null;
+		for(int i=0;i<userManager.getUsers().get(userLoggedInPos).getOrderDates().size();i++){
+			currentFacturationDate=userManager.getUsers().get(userLoggedInPos).getOrderDates().get(i);
+			if(initialDay.compareTo(currentFacturationDate) * currentFacturationDate.compareTo(finalDay) >= 0) {
 						int pos=1;
-						System.out.println(menuModule.menuManager.getMenu().size());
-						for(int i=0; i<menuModule.menuManager.getMenu().size();i++) {
-							report+= pos +". Dish Name: " + menuModule.menuManager.getMenu().get(i).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(i).getTotalQTRequested() + " times and the total of money colleted from this dish is: " + menuModule.menuManager.getMenu().get(i).getTotalMoneyPaid() + "$\n";
+						for(int j=0; j<menuModule.menuManager.getMenu().size();j++) {
+							report+= pos +". Dish Name: " + menuModule.menuManager.getMenu().get(j).getMenuName() + " has been requested a total of " +  menuModule.menuManager.getMenu().get(j).getTotalQTRequested() + " times and the total of money colleted from this dish is: " + menuModule.menuManager.getMenu().get(j).getTotalMoneyPaid() + "$\n";
 							pos++;
 
 						}
-					}
-				}
 			}
 		}
 		return report;
 	}
 
-	public void generateReportB(String initialDay,String finalDay) throws IOException{
+	public void generateReportB(LocalDate initialDay,LocalDate finalDay) throws IOException{
 		File file = new File (REPORT_B_FILE_NAME);
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(exportReportB(initialDay,finalDay).getBytes());
